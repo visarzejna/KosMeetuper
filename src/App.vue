@@ -1,19 +1,19 @@
 <template>
   <div id="app">
     <TheNavbar />
-    <PageHome />
+    <div class="page-wrapper">
+      <router-view />
+    </div>
     <TheFooter />
   </div>
 </template>
 
 <script>
-import  PageHome from '@/pages/PageHome'
 import TheNavbar from '@/components/shared/TheNavbar'
 import TheFooter from '@/components/shared/TheFooter'
 export default {
   name: 'app',
   components: {
-    PageHome,
     TheNavbar,
     TheFooter
   }
@@ -29,6 +29,10 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+}
+
+.page-wrapper {
+  min-height: 55vh;
 }
 
 .bold {
