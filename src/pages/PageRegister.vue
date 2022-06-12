@@ -7,7 +7,7 @@
           <p class="subtitle has-text-grey">Please register to proceed.</p>
           <div class="box">
             <figure class="avatar">
-                <img src="https://placehold.it/128x128">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN-MOxuRwldA5D6vQQM5-Cje2zSAUESGvewA&usqp=CAU">
             </figure>
             <form>
               <div class="field">
@@ -149,6 +149,8 @@
       register () {
         this.$v.form.$touch()
         this.$store.dispatch('auth/registerUser', this.form)
+        .then(() => this.$router.push('/login'))
+        .catch(err => console.log(err))
       }
     }
   }

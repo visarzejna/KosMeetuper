@@ -54,7 +54,7 @@
                 </div>
               </div>
               <div class="meetup-side-box-map">
-                <img src="https://cnet2.cbsistatic.com/img/H_zPLL8-QTZOLxJvgHQ1Jkz0EgY=/830x467/2013/07/10/f0bcef02-67c2-11e3-a665-14feb5ca9861/maps_routemap.png" class="venueMap-mapImg span--100" alt="Location image of meetup venue">
+                <img src="https://previews.123rf.com/images/madmaxer/madmaxer1509/madmaxer150900072/46181474-3d-illustration-of-map-with-red-target-pin.jpg" class="venueMap-mapImg span--100" alt="Location image of meetup venue">
               </div>
               <!-- Threads Start -->
               <p class="menu-label">

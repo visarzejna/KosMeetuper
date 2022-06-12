@@ -25,4 +25,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+   .is-rounded {
+    border-radius: 10px !important;
+  }
+</style>
