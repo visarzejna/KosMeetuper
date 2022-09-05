@@ -71,7 +71,7 @@
                          autocomplete="new-password">
                   <div v-if="$v.form.password.$error" class="form-error">
                     <span v-if="!$v.form.password.required" class="help is-danger">Password is required</span>
-                    <span v-if="!$v.form.password.minLength" class="help is-danger">Password minimum length is 6 letters</span>
+                    <span v-if="!$v.form.password.minLength" class="help is-danger">Password minimum length is 4 letters</span>
                   </div>
                 </div>
               </div>
@@ -150,7 +150,11 @@
         this.$v.form.$touch()
         this.$store.dispatch('auth/registerUser', this.form)
         .then(() => this.$router.push('/login'))
-        .catch(err => console.log(err))
+        .catch((errorMessage) => {
+            this.$toasted.error(errorMessage , {
+              duration: 5000
+            })
+            })
       }
     }
   }
