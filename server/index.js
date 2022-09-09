@@ -5,12 +5,12 @@ const config = require('./config/dev');
 
 const session = require('express-session');
 const passport = require('passport');
-// only with session auth
-// const MongoDBStore = require('connect-mongodb-session')(session);
 
+// Only For Session Authentication !
+// const MongoDBStore = require('connect-mongodb-session')(session);
 // const store = new MongoDBStore({
 //   uri: config.DB_URI,
-//   collection: 'kosmeetuperSessions'
+//   collection: 'meetuperSessions'
 // })
 
 // store.on('error', (error) => console.log(error))
@@ -20,6 +20,7 @@ require("./models/users");
 require("./models/threads");
 require("./models/posts");
 require("./models/categories");
+
 require("./services/passport");
 
 const meetupsRoutes = require('./routes/meetups'),
@@ -33,9 +34,20 @@ mongoose.connect(config.DB_URI, { useNewUrlParser: true })
   .catch(err => console.log(err));
 
 const app = express();
+const server = require('http').createServer(app)
+const io = require("socket.io")(server, { 
+  cors: {
+    origin: "http://localhost:8080",
+    methods: ["GET", "POST"]
+  }
+});
+
+
+require('./socket')(io)
 
 app.use(bodyParser.json());
-// only for session auth
+
+// Only For Session Authentication !
 // app.use(session({ secret: config.SESSION_SECRET,
 //                   cookie: { maxAge: 3600000 },
 //                   resave: false,
@@ -54,6 +66,6 @@ app.use('/api/v1/categories', categoriesRoutes);
 
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT , function() {
+server.listen(PORT , function() {
   console.log('App is running on port: ' + PORT);
 });

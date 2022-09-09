@@ -45,7 +45,7 @@
         <div v-if="user" class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link"> Account </a>
           <div class="navbar-dropdown">
-            <a href="#" class="navbar-item"> Profile </a>
+            <router-link :to="{ name: 'PageProfile' }" href="#" class="navbar-item"> Profile </router-link>
             <hr class="navbar-divider" />
             <a @click.prevent="logout" class="navbar-item">Logout</a>
           </div>
@@ -79,6 +79,9 @@ export default {
     methods: {
       logout () {
         this.$store.dispatch('auth/logout')
+          .then(() => {
+            this.$router.push('/')
+          })
       }
   },
 };
