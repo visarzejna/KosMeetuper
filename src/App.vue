@@ -20,11 +20,15 @@ export default {
     computed: {
       isAuthResolved() {
         return this.$store.state.auth.isAuthResolved
-      }
+      },
+      isLocationResolved () {
+      return this.$store.state.meta.isLocationResolved
+    }
     },
   created () {
-    this.$store.dispatch('auth/getAuthUser')
-  }
+    // this.$store.dispatch('auth/getAuthUser')
+    this.$store.dispatch('meta/fetchMetaData')
+    }
 }
 </script>
 
