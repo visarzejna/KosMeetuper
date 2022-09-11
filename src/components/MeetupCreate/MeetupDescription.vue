@@ -7,7 +7,7 @@
              type="text"
              placeholder="Image URL">
       <div v-if="$v.form.image.$error">
-        <span v-if="!$v.form.image.required" class="help is-danger">Username is required</span>
+        <span v-if="!$v.form.image.required" class="help is-danger">Image is required</span>
       </div>
     </div>
     <div class="field">
