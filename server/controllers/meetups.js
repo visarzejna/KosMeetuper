@@ -1,5 +1,5 @@
 const Meetup = require('../models/meetups');
-const User = require('../models/users')
+const User = require('../models/users');
 
 exports.getSecret = function (req, res) {
   return res.json({secret: 'I am secret Message'})
@@ -8,28 +8,39 @@ exports.getSecret = function (req, res) {
 exports.getMeetups = function(req, res) {
   const {category, location} = req.query;
 
+  // Page Setup
+  const pageSize = parseInt(req.query.pageSize) || 6;
+  const pageNum = parseInt(req.query.pageNum) || 1;
+  const skips = pageSize * (pageNum - 1);
+
   const findQuery = location ? Meetup.find({ processedLocation: { $regex: '.*' + location + '.*' } })
                              : Meetup.find({})
+
   findQuery
         .populate('category')
         .populate('joinedPeople')
-        .limit(5)
+        .skip(skips)
+        .limit(pageSize)
         .sort({'createdAt': -1})
         .exec((errors, meetups) => {
     if (errors) {
       return res.status(422).send({errors});
     }
 
-    // WARNING: requires improvement, can decrease performance
     if (category) {
       meetups = meetups.filter(meetup => {
         return meetup.category.name === category
       })
     }
 
-    return res.json(meetups);
+    Meetup.count({})
+      .then(count => {
+
+        return res.json({meetups: meetups.splice(0, pageSize), count, pageCount: count / pageSize});
+      });
   });
 }
+
 
 exports.getMeetupById = function(req, res) {
   const {id} = req.params;
@@ -70,9 +81,10 @@ exports.joinMeetup = function (req, res) {
   const {id} = req.params;
 
   Meetup.findById(id, (errors, meetup) => {
-    if(errors) {
+    if (errors) {
       return res.status(422).send({errors})
     }
+
     meetup.joinedPeople.push(user);
     meetup.joinedPeopleCount++;
 
@@ -80,7 +92,7 @@ exports.joinMeetup = function (req, res) {
       [meetup.save(),
       User.updateOne({ _id: user.id }, { $push: { joinedMeetups: meetup }})])
       .then(result => res.json({id}))
-      .catch(errors => res.status(422).send(errors))
+      .catch(errors => res.status(422).send({errors}))
   })
 }
 
@@ -95,3 +107,50 @@ exports.leaveMeetup = function (req, res) {
     .catch(errors => res.status(422).send({errors}))
 }
 
+// We were just debugging in this lecture (:
+exports.updateMeetup = function (req, res) {
+  const meetupData = req.body
+  const {id} = req.params
+  const user = req.user;
+  meetupData.updatedAt = new Date()
+
+  if (user.id === meetupData.meetupCreator._id) {
+    Meetup.findByIdAndUpdate(id, { $set: meetupData}, { new: true })
+          .populate('meetupCreator', 'name id avatar')
+          .populate('category')
+          .exec((errors, updatedMeetup) => {
+
+      if (errors) {
+        return res.status(422).send({errors})
+      }
+
+      return res.json(updatedMeetup)
+    })
+  } else {
+    return res.status(401).send({errors: {message: 'Not Authorized!'}})
+  }
+}
+
+
+exports.deleteMeetup = function(req, res) {
+  const {id} = req.params;
+  const user = req.user;
+
+  Meetup.findById(id, (errors, meetup) => {
+    if (errors) {
+      return res.status(422).send({errors})
+    }
+
+    if (meetup.meetupCreator != user.id) {
+      return res.status(401).send({errors: {message: 'Not Authorized!'}})
+    }
+
+    meetup.remove((errors, _) => {
+      if (errors) {
+        return res.status(422).send({errors})
+      }
+
+      return res.json(meetup._id);
+    })
+  })
+}
