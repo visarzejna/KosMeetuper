@@ -12,6 +12,7 @@ import PageProfile from '@/pages/PageProfile'
 import PageSecret from '@/pages/PageSecret'
 import PageNotFound from '@/pages/PageNotFound'
 import PageNotAuthenticated from '@/pages/PageNotAuthenticated'
+import PageMeetupEdit from '@/pages/PageMeetupEdit'
 
 Vue.use(Router)
 
@@ -49,6 +50,13 @@ const router = new Router({
       path: '/meetups/:id',
       name: 'PageMeetupDetail',
       component: PageMeetupDetail
+    },
+    {
+      path: '/meetups/:meetupId/edit',
+      name: 'PageMeetupEdit',
+      component: PageMeetupEdit,
+      meta: {onlyAuthUser: true},
+      props: true
     },
     {
       path: '/login',

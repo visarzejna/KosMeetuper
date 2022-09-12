@@ -28,3 +28,10 @@ export const applyFilters = (url, filter) => {
   
     return url
   }
+
+  export const processLocation = location => {
+    return location
+          .toLowerCase()
+          .replace(/[\s,]+/g, "")
+          .trim()
+  }

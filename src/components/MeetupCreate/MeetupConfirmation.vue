@@ -37,7 +37,7 @@
         <span class="result-title">
         Category
         </span>
-        <p>{{meetupToCreate.category}}</p>
+        <p>{{meetupToCreate.category.name | capitalize}}</p>
       </div>
       <div>
         <span class="result-title">
