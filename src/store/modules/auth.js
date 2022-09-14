@@ -17,6 +17,7 @@ export default {
   namespaced: true,
   state: {
     user: null,
+    registeredUsers: [],
     isAuthResolved: false
   },
   getters: {
@@ -32,7 +33,12 @@ export default {
     },
     isMember: (state) => (meetupId) => {
       return state.user && state.user['joinedMeetups'] && state.user['joinedMeetups'].includes(meetupId)
-    }
+    },
+    // registeredMembers (state) {
+    //   if(state.user.role === 'admin'){
+    //     return state.registeredUsers
+    //   }
+    // }
   },
   actions: {
     loginWithEmailAndPassword ({commit}, userData) {
@@ -49,18 +55,10 @@ export default {
       .catch(err => rejectError(err))
     },
     logout ({commit}) {
-      // for session auth
-      // return axios.post('/api/v1/users/logout')
-      //   .then(() => {
-      //     commit('setAuthUser', null)
-      //     return true
-      //   })
-      //   .catch(err => {
-      //     return err
-      //   })
       return new Promise((resolve) => {
         localStorage.removeItem('meetuper-jwt')
         commit('setAuthUser', null)
+        commit('clearRegisteredMembers')
         resolve(true)
       })
     },
@@ -91,6 +89,20 @@ export default {
           return err
         })
     },
+    getUsers({commit}){
+      let allMembers = []
+      const config = {
+        headers: {
+          'Cache-Control': 'no-cache',
+        }
+      }
+      return axiosInstance.get('/api/v1/users/getUsers', config)
+          .then((res) => {
+            allMembers = res.data;
+            commit('setRegisteredMembers', allMembers)
+            return allMembers
+          })
+    },
     addMeetupToAuthUser ({commit, state}, meetupId) {
       const userMeetups = [...state.user['joinedMeetups'], meetupId]
       commit('setMeetupsToAuthUser', userMeetups)
@@ -120,6 +132,12 @@ export default {
     },
     setMeetupsToAuthUser (state, meetups){
       return Vue.set(state.user, 'joinedMeetups', meetups)
+    },
+    setRegisteredMembers (state, allMembers){
+      return state.registeredUsers = allMembers
+    },
+    clearRegisteredMembers(state){
+      state.registeredUsers.splice(0, state.registeredUsers.length)
     }
   }
 }

@@ -14,15 +14,20 @@ const userSchema = new Schema({
            match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/]},
   name: { type: String,
           required: true,
-          minlength: [6, 'Too short, min is 6 characters']},
+          minlength: [2, 'Too short, min is 2 characters']},
   username: { type: String,
           required: true,
-          min: [6, 'Too short, min is 6 characters']},
+          min: [4, 'Too short, min is 4 characters']},
   password: {
     type: String,
     minlength: [4, 'Too short, min is 4 characters'],
     maxlength: [32, 'Too long, max is 32 characters'],
     required: 'Password is required'
+  },
+  role: {
+    type: String,
+    default: "user",
+    enum: ["user", "admin", "superadmin"]
   },
   info: String,
   createdAt: { type: Date, default: Date.now },
@@ -70,6 +75,7 @@ userSchema.methods.toAuthJSON = function () {
     username: this.username,
     info: this.info,
     email: this.email,
+    role: this.role,
     joinedMeetups: this.joinedMeetups,
     token: this.generateJWT()
   };

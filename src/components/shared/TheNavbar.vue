@@ -46,6 +46,8 @@
           <a class="navbar-link"> Account </a>
           <div class="navbar-dropdown">
             <router-link :to="{ name: 'PageProfile' }" href="#" class="navbar-item"> Profile </router-link>
+            <hr v-if="user.role === 'admin'" class="navbar-divider" />
+            <router-link v-if="user.role === 'admin'" :to="{ name: 'PageAdminDashboard' }" href="#" class="navbar-item"> Dashboard </router-link>
             <hr class="navbar-divider" />
             <a @click.prevent="logout" class="navbar-item">Logout</a>
           </div>

@@ -20,14 +20,18 @@
                     :key="meetup._id"
                     :meetup="meetup" />
       </div>
-      <paginate
-        v-model="pagination.pageNum"
-        :page-count="pagination.pageCount"
-        :click-handler="fetchPaginatedMeetups"
-        :prev-text="'Prev'"
-        :next-text="'Next'"
-        :container-class="'paginationContainer'">
-      </paginate>
+     <div class="columns is-centered">
+        <paginate
+          v-model="pagination.pageNum"
+          :page-count="pagination.pageCount"
+          :click-handler="fetchPaginatedMeetups"
+          :prev-text="'Prev'"
+          :next-text="'Next'"
+          :container-class="'paginationContainer'"
+          class="is-centered"
+        >
+        </paginate>
+      </div>
       </section>
       <section class="section">
         <div>
@@ -51,7 +55,7 @@
   import MeetupItem from '@/components/MeetupItem'
   import { mapActions, mapState, mapGetters } from 'vuex'
   import pageLoader from '@/mixins/pageLoader'
-  import { processLocation } from '@/helpers'
+  // import { processLocation } from '@/helpers'
 
   export default {
     components: {
@@ -71,12 +75,10 @@
       })
     },
     created () {
-      const {pageSize, pageNum} = this.$route.query
-
+ const {pageSize, pageNum} = this.$route.query
       if (pageSize && pageNum) {
         this.initializePagesFromQuery({pageSize, pageNum})
       }
-
       Promise.all([this.handleFetchMeetups({}), this.fetchCategories()])
         .then(() => this.pageLoader_resolveData())
         .catch((err) => {
@@ -85,13 +87,12 @@
         })
     },
     methods: {
-      ...mapActions('meetups', ['fetchMeetups', 'initializePagesFromQuery']),
+     ...mapActions('meetups', ['fetchMeetups', 'initializePagesFromQuery']),
       ...mapActions('categories', ['fetchCategories']),
       handleFetchMeetups ({reset}) {
         const filter = {}
         filter['pageSize'] = this.pagination.pageSize
         filter['pageNum'] = this.pagination.pageNum
-
         return this.fetchMeetups({filter, reset}).then(_ => this.setQueryPaginationParams())
       },
       fetchPaginatedMeetups (page) {

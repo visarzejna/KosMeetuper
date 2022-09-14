@@ -16,7 +16,7 @@ export default new Vuex.Store({
     threads,
     auth,
     stats,
-    meta
+    meta,
   },
   mutations: {
     setItems (state, {resource, items}) {

@@ -19,9 +19,12 @@
                 v-if="searchedLocation && meetups && meetups.length > 0"
                 class="level-item"
               >
-              <div v-if="category" class="level-item">
-                <button @click="cancelCategory" class="button is-danger">{{category}} X</button>
-              </div>
+                <div v-if="category" class="level-item">
+                  <span class="tag is-danger is-large">
+                     {{ category }}
+                    <button @click="cancelCategory" class="delete"></button>
+                  </span>
+                </div>
                 <span>Meetups in {{ meetups[0].location }}</span>
               </div>
             </div>
@@ -37,7 +40,10 @@
     </div>
     <div v-if="pageLoader_isDataLoaded" class="container">
       <section class="section page-find">
-        <div v-if="meetups && meetups.length > 0" class="columns cover is-multiline">
+        <div
+          v-if="meetups && meetups.length > 0"
+          class="columns cover is-multiline"
+        >
           <div
             v-for="meetup of meetups"
             :key="meetup._id"
@@ -89,21 +95,21 @@
 </template>
 
 <script>
-import pageLoader from '@/mixins/pageLoader'
-import {processLocation} from '@/helpers'
+import pageLoader from "@/mixins/pageLoader";
+import { processLocation } from "@/helpers";
 
 export default {
   props: {
     category: {
       required: false,
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
       searchedLocation: this.$store.getters["meta/location"],
       filter: {},
-      categoryValue: this.category
+      categoryValue: this.category,
     };
   },
   mixins: [pageLoader],
@@ -120,22 +126,24 @@ export default {
       if (this.searchedLocation) {
         // this.filter["location"] = processLocation(this.searchedLocation)
       }
-      if(this.category) {
-        this.filter['category'] = this.category
+      if (this.category) {
+        this.filter["category"] = this.category;
       }
-      this.pageLoader_isDataLoaded = false
-      this.$store.dispatch("meetups/fetchMeetups", { filter: this.filter })
+      this.pageLoader_isDataLoaded = false;
+      this.$store
+        .dispatch("meetups/fetchMeetups", { filter: this.filter })
         .then(() => {
-          this.pageLoader_resolveData()
-        }).catch(err => {
-          this.pageLoader_resolveData()
-          console.log(err)
+          this.pageLoader_resolveData();
         })
+        .catch((err) => {
+          this.pageLoader_resolveData();
+          console.log(err);
+        });
     },
-    cancelCategory(){
-      this.categoryValue = null
-      this.$router.push({name: 'PageMeetupFind'})
-    }
+    cancelCategory() {
+      this.categoryValue = null;
+      this.$router.push({ name: "PageMeetupFind" });
+    },
   },
 };
 </script>

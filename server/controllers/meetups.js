@@ -141,7 +141,7 @@ exports.deleteMeetup = function(req, res) {
       return res.status(422).send({errors})
     }
 
-    if (meetup.meetupCreator != user.id) {
+    if (meetup.meetupCreator != user.id && user.role === 'user') {
       return res.status(401).send({errors: {message: 'Not Authorized!'}})
     }
 

@@ -9,7 +9,7 @@ import PageMeetupCreate from '@/pages/PageMeetupCreate'
 import PageLogin from '@/pages/PageLogin'
 import PageRegister from '@/pages/PageRegister'
 import PageProfile from '@/pages/PageProfile'
-import PageSecret from '@/pages/PageSecret'
+import PageAdminDashboard from '@/pages/PageAdminDashboard'
 import PageNotFound from '@/pages/PageNotFound'
 import PageNotAuthenticated from '@/pages/PageNotAuthenticated'
 import PageMeetupEdit from '@/pages/PageMeetupEdit'
@@ -41,9 +41,9 @@ const router = new Router({
       meta: {onlyAuthUser: true}
     },
     {
-      path: '/meetups/secret',
-      name: 'PageSecret',
-      component: PageSecret,
+      path: '/admin',
+      name: 'PageAdminDashboard',
+      component: PageAdminDashboard,
       meta: {onlyAuthUser: true}
     },
     {

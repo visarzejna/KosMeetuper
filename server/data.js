@@ -159,13 +159,14 @@ module.exports = {
     {
       "_id": user1Id,
       "avatar": "https://b.kisscc0.com/20180718/urw/kisscc0-ninja-computer-icons-samurai-youtube-avatar-ninja-5b4ed903c2dd20.4931332915318940197982.jpg",
-      "email": "filip@gmail.com",
-      "name": "Filip Jerga",
-      "info": "Bla bla bla bla",
+      "email": "visar@gmail.com",
+      "name": "Visar Zejna",
+      "info": "The admin of this page",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
-      "username": "Rhonyn99",
+      "username": "visarzejna",
       "password": "testtest",
+      "role": "admin",
       joinedMeetups: [meetup3Id, meetup4Id, meetup5Id, meetup6Id]
     },
     {
@@ -178,6 +179,7 @@ module.exports = {
       "updatedAt": moment().toISOString(),
       "username": "Petergreen",
       "password": "testtest1",
+      "role": "user",
       joinedMeetups: [meetup1Id]
     },
     {
@@ -190,6 +192,7 @@ module.exports = {
       "updatedAt": moment().toISOString(),
       "username": "Kevin21",
       "password": "testtest2",
+      "role": "user",
       joinedMeetups: [meetup2Id, meetup3Id, meetup4Id, meetup5Id, meetup6Id]
     }
   ],

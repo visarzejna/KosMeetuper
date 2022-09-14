@@ -70,51 +70,55 @@
             class="column is-3-tablet is-6-mobile"
           >
             <!-- MEETUPS -->
-            <div class="card">
-              <div class="card-image">
-                <figure class="image is-4by3">
-                  <!-- TODO: Display Meetup Image -->
-                  <img :src="meetup.image" />
-                </figure>
-              </div>
-              <div class="card-content">
-                <div class="media">
-                  <div class="media-content">
-                    <!-- TODO: Display Meetup title -->
-                    <p class="title is-4">{{ meetup.title }}</p>
-                    <!-- TODO: Display Category name -->
-                    <p class="subtitle is-6">
-                      <span class="tag is-dark subtitle">{{
-                        meetup.category.name | capitalize
-                      }}</span>
+            <router-link
+              :to="{ name: 'PageMeetupDetail', params: { id: meetup._id } }"
+            >
+              <div class="card">
+                <div class="card-image">
+                  <figure class="image is-4by3">
+                    <!-- TODO: Display Meetup Image -->
+                    <img :src="meetup.image" />
+                  </figure>
+                </div>
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-content">
+                      <!-- TODO: Display Meetup title -->
+                      <p class="title is-4">{{ meetup.title }}</p>
+                      <!-- TODO: Display Category name -->
+                      <p class="subtitle is-6">
+                        <span class="tag is-dark subtitle">{{
+                          meetup.category.name | capitalize
+                        }}</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="content">
+                    <!-- TODO: Display Meetup shortInfo -->
+                    <p>
+                      {{ meetup.shortInfo }}
                     </p>
                   </div>
                 </div>
-                <div class="content">
-                  <!-- TODO: Display Meetup shortInfo -->
-                  <p>
-                    {{ meetup.shortInfo }}
-                  </p>
-                </div>
+                <footer class="card-footer">
+                  <router-link
+                    :to="{
+                      name: 'PageMeetupEdit',
+                      params: { meetupId: meetup._id },
+                    }"
+                    class="card-footer-item"
+                    >Edit</router-link
+                  >
+                  <a
+                    @click.prevent="
+                      ($event) => showDeleteMeetupWarning($event, meetup._id)
+                    "
+                    class="card-footer-item delete-item"
+                    >Delete</a
+                  >
+                </footer>
               </div>
-              <footer class="card-footer">
-                <router-link
-                  :to="{
-                    name: 'PageMeetupEdit',
-                    params: { meetupId: meetup._id },
-                  }"
-                  class="card-footer-item"
-                  >Edit</router-link
-                >
-                <a
-                  @click.prevent="
-                    ($event) => showDeleteMeetupWarning($event, meetup._id)
-                  "
-                  class="card-footer-item delete-item"
-                  >Delete</a
-                >
-              </footer>
-            </div>
+            </router-link>
             <br />
           </div>
         </template>
@@ -250,11 +254,19 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 body {
   background: #f5f7fa;
 }
+.is-hoverable {
+  transition: 0.3s;
 
+  &:hover {
+    -webkit-box-shadow: 2px 4px 15px -2px rgba(189, 189, 189, 1);
+    -moz-box-shadow: 2px 4px 15px -2px rgba(189, 189, 189, 1);
+    box-shadow: 2px 4px 15px -2px rgba(189, 189, 189, 1);
+  }
+}
 .stats-error {
   font-size: 40px;
   font-weight: bold;

@@ -19,7 +19,6 @@ exports.getUsers = function(req, res) {
 
 exports.getCurrentUser = function (req, res, next) {
   const user = req.user;
-
   if(!user) {
     return res.sendStatus(422);
   }
@@ -60,7 +59,6 @@ exports.register = function(req, res) {
   }
 
   const user = new User(registerData);
-
   return user.save((errors, savedUser) => {
     if (errors) {
       return res.status(422).json({errors})
@@ -233,7 +231,7 @@ exports.updateUser = (req, res) => {
   const userData = req.body;
   const user = req.user;
 
-  if (user.id === userId) {
+  if (user.id === userId || user.role === 'admin') {
     // new: bool - true to return the modified document rather than the original. defaults to false
     User.findByIdAndUpdate(userId, { $set: userData}, { new: true }, (errors, updatedUser) => {
       if (errors) return res.status(422).send({errors});
