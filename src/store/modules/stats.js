@@ -26,6 +26,14 @@ export default {
           return stats
         })
     },
+    fetchAllStats ({commit}) {
+      return axiosInstance.get('/api/v1/meetups')
+        .then(res => {
+          const stats = res.data
+          commit('setStats', stats)
+          return stats
+        })
+    },
     updateStats ({state, commit}, meetupId) {
       commit('deleteResource', {resource: 'meetups', itemId: meetupId})
 

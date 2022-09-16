@@ -12,5 +12,6 @@ router.post("/logout", UsersCtrl.logout);
 router.get("/me", AuthCtrl.onlyAuthUser, UsersCtrl.getCurrentUser);
 router.get("/me/activity", AuthCtrl.onlyAuthUser, UsersCtrl.getUserActivity);
 router.patch("/:id", AuthCtrl.onlyAuthUser, UsersCtrl.updateUser);
+router.delete("/:id", AuthCtrl.onlyAuthUser, UsersCtrl.deleteUser);
 
 module.exports = router;

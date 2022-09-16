@@ -101,8 +101,24 @@ export default {
             allMembers = res.data;
             commit('setRegisteredMembers', allMembers)
             return allMembers
-          })
+          })  
     },
+    deleteUser({commit, rootState, dispatch}, userId){
+      // const meetups = rootState.meetups.items
+      return axiosInstance.delete(`/api/v1/users/${userId}`)
+      .then((res) => {
+        const deletedUser = res.data
+        
+        // let meetupsToDelete = meetups.filter({meetupCreator: deletedUser._id})
+        //       console.log(meetupsToDelete)
+        // for(let i = 0; i < meetupsToDelete.length; i++){
+        //   dispatch('meetups/deleteMeetup', meetupsToDelete[i].id ,{root: true})
+        // }
+      
+        commit('deleteUser', deletedUser)
+      })
+
+    },  
     addMeetupToAuthUser ({commit, state}, meetupId) {
       const userMeetups = [...state.user['joinedMeetups'], meetupId]
       commit('setMeetupsToAuthUser', userMeetups)
@@ -138,6 +154,9 @@ export default {
     },
     clearRegisteredMembers(state){
       state.registeredUsers.splice(0, state.registeredUsers.length)
+    },
+    deleteUser(state, deletedUser){
+      // state.registeredUsers.filter(data => data.id = deletedUser.id)
     }
   }
 }

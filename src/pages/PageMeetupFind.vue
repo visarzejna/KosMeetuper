@@ -21,7 +21,7 @@
               >
                 <div v-if="category" class="level-item">
                   <span class="tag is-danger is-large">
-                     {{ category }}
+                    {{ category }}
                     <button @click="cancelCategory" class="delete"></button>
                   </span>
                 </div>
@@ -52,7 +52,7 @@
           >
             <router-link
               :to="'/meetups/' + meetup._id"
-              class="meetup-card-find"
+              class="meetup-card-find is-hoverable"
               href="#"
               :style="{
                 'background-image': `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${meetup.image})`,
@@ -214,6 +214,14 @@ export default {
       padding: 15px;
       width: 100%;
     }
+  }
+}
+.is-hoverable {
+  transition: 0.3s;
+
+  &:hover {
+    -webkit-box-shadow: 0px 0px 13px 3px rgba(0, 0, 0, 0.88);
+    box-shadow: 0px 0px 13px 3px rgba(0, 0, 0, 0.88);
   }
 }
 

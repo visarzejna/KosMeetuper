@@ -33,6 +33,13 @@
             :to="{ name: 'PageMeetupEdit', params: { meetupId: meetup._id } }"
             class="button is-primary"
             >Edit</router-link>
+            <a v-if="isMeetupOwner || role === 'admin'"
+                    @click.prevent="
+                      ($event) => showDeleteMeetupWarning($event, meetup._id)
+                    "
+                    class="button is-danger ml-1"
+                    >Delete</a
+                  >
         </div>
       </div>
     </section>
@@ -143,6 +150,7 @@ export default {
     return {
       threadPageNum: 1,
       threadPageSize: 5,
+      role: 'user'
     };
   },
   computed: {
@@ -150,6 +158,7 @@ export default {
       meetup: (state) => state.meetups.item,
       threads: (state) => state.threads.items,
       authUser: (state) => state.auth.user,
+      // role: (state) => state.auth.user.role || 'user',
       isAllThreadsLoaded: (state) => state.threads.isAllThreadsLoaded,
     }),
     meetupCreator() {
@@ -179,6 +188,9 @@ export default {
   },
   created() {
     const meetupId = this.$route.params.id;
+    if(this.authUser){
+      this.role = this.authUser.role
+    }
     this.fetchMeetupById(meetupId);
     this.fetchThreadsHandler({ meetupId, init: true });
 
@@ -226,6 +238,25 @@ export default {
         done();
       });
     },
+    showDeleteMeetupWarning(e, meetupId) {
+      e.stopPropagation();
+      const isConfirm = confirm(
+        "Are you sure you want to delete this meetup???"
+      );
+
+      if (isConfirm) {
+        this.$store
+          .dispatch("meetups/deleteMeetup", meetupId)
+          .then((id) => {
+            this.$store.dispatch("stats/updateStats", id);
+            this.$toasted.success("Meetup Deleted Succesfully!", {
+              duration: 3000,
+            })
+            this.$router.go(-1)
+          })
+          .catch((err) => console.log(err));
+      }
+    }
   },
 };
 </script>

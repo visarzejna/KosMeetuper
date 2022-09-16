@@ -111,6 +111,17 @@
                     />
                   </div>
                 </div>
+                <div class="meetup-side-box-place m-b-sm">
+                  <p><b>Image URL: </b></p>
+                  <div class="field">
+                    <!-- TODO: Bind meetup location -->
+                    <input
+                      v-model="meetup.image"
+                      class="input"
+                      type="text"
+                    />
+                  </div>
+                </div>
                 <div class="meetup-side-box-more-info">
                   <p><b>Additional Info</b></p>
                   <div class="field">
@@ -215,7 +226,8 @@ export default {
         .then(() => {
           this.$toasted.success("Meetup Succesfuly Updated!", {
             duration: 3000,
-          });
+          })
+          this.$router.push(`/meetups/${this.meetupId}`)
         })
         .catch((err) => console.log(err));
     },

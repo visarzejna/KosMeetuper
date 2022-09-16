@@ -144,12 +144,13 @@ exports.deleteMeetup = function(req, res) {
     if (meetup.meetupCreator != user.id && user.role === 'user') {
       return res.status(401).send({errors: {message: 'Not Authorized!'}})
     }
-
+      // User.updateMany({ _id: { $in: meetup.joinedPeople}}, { $pull: { joinedMeetups: meetup._id }})
+    
     meetup.remove((errors, _) => {
       if (errors) {
+        console.log(errors.message)
         return res.status(422).send({errors})
       }
-
       return res.json(meetup._id);
     })
   })

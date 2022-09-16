@@ -91,7 +91,7 @@
         </paginate>
       </div>
       <div v-if="activeTab === 'members'" class="center">
-        <table class="table is-striped ">
+        <table class="table is-striped">
           <thead>
             <tr>
               <th scope="col">Avatar</th>
@@ -109,19 +109,28 @@
               :key="registeredMember._id"
               v-for="registeredMember in registeredMembers"
             >
-              <th scope="row"><img class="is-rounded" :src="registeredMember.avatar"  style="width: 80px" /></th>
-              <th >{{ registeredMember.name }}</th>
+              <th scope="row">
+                <img
+                  class="is-rounded"
+                  :src="registeredMember.avatar"
+                  style="width: 80px"
+                />
+              </th>
+              <th>{{ registeredMember.name }}</th>
               <td>{{ registeredMember.username }}</td>
               <td>{{ registeredMember.email }}</td>
               <td>{{ registeredMember.createdAt | formatDate }}</td>
               <td>{{ registeredMember.joinedMeetups.length }}</td>
               <td>{{ registeredMember.role }}</td>
               <td>
-             
-                <router-link to="/"
+                <a
+                  @click.prevent="
+                    ($event) =>
+                      showDeleteUserWarning($event, registeredMember._id)
+                  "
                   class="button is-danger"
-                  >Delete</router-link
-                >  
+                  >Delete</a
+                >
               </td>
             </tr>
           </tbody>
@@ -139,6 +148,7 @@ export default {
     return {
       activeTab: "members",
       registeredMembers: [],
+      // meetups: [],
     };
   },
   mixins: [pageLoader],
@@ -146,7 +156,7 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       meetups: (state) => state.meetups.items,
-  
+
       pagination: (state) => state.meetups.pagination,
       // registeredMembers: (state) => state.auth.registeredUsers
     }),
@@ -158,6 +168,10 @@ export default {
     this.$store
       .dispatch("auth/getUsers")
       .then((allMembers) => (this.registeredMembers = allMembers));
+
+    // this.$store
+    //   .dispatch("stats/fetchAllStats")
+    //   .then((stats) => (this.meetups = stats.meetups));
     const { pageSize, pageNum } = this.$route.query;
 
     if (pageSize && pageNum) {
@@ -170,7 +184,7 @@ export default {
         console.error(err);
         this.pageLoader_resolveData();
       });
-    
+
     // console.log("The meetups: " + this.meetups);
   },
   methods: {
@@ -183,9 +197,33 @@ export default {
       if (isConfirm) {
         this.$store
           .dispatch("meetups/deleteMeetup", meetupId)
-          .then((id) => {
-            this.$store.dispatch("stats/updateStats", id);
+          .then(() => {
+            Promise.all([this.handleFetchMeetups({}), this.fetchCategories()])
+              .then(() => this.pageLoader_resolveData())
+              .catch((err) => {
+                console.error(err);
+                this.pageLoader_resolveData();
+              });
+
             this.$toasted.success("Meetup Deleted Succesfully!", {
+              duration: 3000,
+            });
+          })
+          .catch((err) => console.log(err.message));
+      }
+    },
+    showDeleteUserWarning(e, userId) {
+      e.stopPropagation();
+      const isConfirm = confirm("Are you sure you want to delete this User???");
+
+      if (isConfirm) {
+        this.$store
+          .dispatch("auth/deleteUser", userId)
+          .then(() => {
+            this.$store
+              .dispatch("auth/getUsers")
+              .then((allMembers) => (this.registeredMembers = allMembers));
+            this.$toasted.success("User Deleted Succesfully!", {
               duration: 3000,
             });
           })
@@ -219,25 +257,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 body {
   background: #f5f7fa;
 }
- .is-hoverable {
-    transition: 0.3s;
+.is-hoverable {
+  transition: 0.3s;
 
-    &:hover {
-      -webkit-box-shadow: 2px 4px 15px -2px rgba(189,189,189,1);
-      -moz-box-shadow: 2px 4px 15px -2px rgba(189,189,189,1);
-      box-shadow: 2px 4px 15px -2px rgba(189,189,189,1);
-    }
-    }
+  &:hover {
+    -webkit-box-shadow: 2px 4px 15px -2px rgba(189, 189, 189, 1);
+    -moz-box-shadow: 2px 4px 15px -2px rgba(189, 189, 189, 1);
+    box-shadow: 2px 4px 15px -2px rgba(189, 189, 189, 1);
+  }
+}
 .stats-error {
   font-size: 40px;
   font-weight: bold;
   margin-top: 30px;
 }
-.table{
+.table {
   border: 1px grey solid;
 }
 .delete-item {

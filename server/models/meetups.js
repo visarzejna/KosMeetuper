@@ -1,5 +1,5 @@
 const Thread = require('./threads');
-const User = require('./users');
+// const User = require('./users');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -34,7 +34,7 @@ async function removeThreads(meetup, next) {
 
     return Promise.all(threads.map(t => t.remove()))
   }).clone()
-    await User.updateMany({ _id: { $in: meetup.joinedPeople}}, { $pull: { joinedMeetups: meetup._id }})
+  //  await User.updateMany({ _id: { $in: meetup.joinedPeople}}, { $pull: { joinedMeetups: meetup._id }})
     next()
   } catch (e) {
     next(e);

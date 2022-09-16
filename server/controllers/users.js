@@ -237,10 +237,37 @@ exports.updateUser = (req, res) => {
       if (errors) return res.status(422).send({errors});
 
       return res.json(updatedUser);
-    });
+    });z
   } else {
     return res.status(422).send({errors: 'Authorization Error!'})
   }
+}
+
+exports.deleteUser = function (req, res)  {
+  // try {
+  //     const userId = req.params.id;
+  //     // const user = await User.deleteOne({_id: userId});
+
+  //     res.status(200).json(user);
+  // } catch(error) {
+  //     res.status(409).json({message: error.message});
+  // }
+
+  const {id} = req.params;
+
+  User.findById(id, (errors, user) => {
+    if (errors) {
+      return res.status(422).send({errors})
+    }
+    
+    user.remove((errors, _) => {
+      if (errors) {
+        console.log('error: ' + errors.message)
+        return res.status(422).send({errors})
+      }
+      return res.json(user._id);
+    })
+  })
 }
 
 
