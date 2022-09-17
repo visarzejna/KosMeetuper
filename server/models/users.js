@@ -45,7 +45,6 @@ userSchema.post("remove", removeMeetups);
 
 async function removeMeetups(user, next) {
   try {
-    console.log(user.name + " user");
     await Meetup.find(
       { meetupCreator: { $in: user._id } },
       function (errors, meetups) {

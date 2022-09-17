@@ -4,7 +4,7 @@
       <router-link :to="'/'" class="navbar-item" href="https://bulma.io">
         <h1 class="title is-4">KosMeetuper</h1>
       </router-link>
-      <a
+      <a @click="openBurger"
         role="button"
         class="navbar-burger burger"
         aria-label="menu"
@@ -17,7 +17,7 @@
       </a>
     </div>
 
-      <div id="navbarBasicExample" class="navbar-menu is-active">
+      <div id="navbarBasicExample" :class="['navbar-menu', 'is-mobile', {'is-active': isOpen}]">
       <div class="navbar-start">
         <router-link :to="'/'" class="navbar-item"> Home </router-link>
 
@@ -25,8 +25,8 @@
           Find
         </router-link>
 
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link"> More </a>
+         <div :class="['navbar-item', 'has-dropdown', 'is-hoverable', 'is-mobile', {'is-active': isMoreOpen}]">
+            <a @click="openMore" class="navbar-link"> More </a>
 
           <div class="navbar-dropdown">
             <a class="navbar-item"> About </a>
@@ -40,7 +40,7 @@
 
       <div class="navbar-end">
         <div class="navbar-item">
-          <div v-if="user">Welcome {{ user.username }}</div>
+          <div v-if="user">Welcome <b>{{ user.username }}</b></div>
         </div>
         <div v-if="user" class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link"> Account </a>
@@ -73,6 +73,12 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
+  data () {
+    return {
+      isOpen: false,
+      isMoreOpen: false,
+    }
+  },
   computed: {
     ...mapGetters({
       user: "auth/authUser",
@@ -84,9 +90,17 @@ export default {
           .then(() => {
             this.$router.push('/')
           })
-      }
+      },
+       openBurger () {
+      this.isOpen = !this.isOpen
+    },
+    openMore() {
+      this.isMoreOpen = !this.isMoreOpen
+    }
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+  
+</style>
