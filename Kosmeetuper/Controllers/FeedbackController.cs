@@ -21,6 +21,10 @@ namespace Kosmeetuper.Controllers
                 Email = feedback.Email,
                 MessageDescription = feedback.MessageDescription
             };
+            // if(newFeedback == null)
+            // {
+            //     return BadRequest("Didnt recieve any message!");
+            // }
 
             return Created("Feedback sent succesfully.", _repository.Add(newFeedback));
         }
@@ -29,6 +33,10 @@ namespace Kosmeetuper.Controllers
         public JsonResult Get()
         {
             var feedback = _repository.GetAll();
+            if(feedback == null)
+            {
+                return new JsonResult("No feedback in the database!");
+            }
             return new JsonResult(feedback);
         }
 

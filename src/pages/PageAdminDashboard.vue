@@ -20,6 +20,22 @@
             <p class="stat-val">{{ registeredMembers.length }}</p>
             <p class="stat-key">Members</p>
           </div>
+          <div
+            @click="activeTab = 'messages'"
+            :class="{ isActive: activeTab === 'messages' }"
+            class="stats-tab column is-2-tablet is-4-mobile has-text-centered"
+          >
+            <p class="stat-val">{{ messages.length }}</p>
+            <p class="stat-key">Messages</p>
+          </div>
+          <div
+            @click="activeTab = 'faq'"
+            :class="{ isActive: activeTab === 'faq' }"
+            class="stats-tab column is-2-tablet is-4-mobile has-text-centered"
+          >
+            <p class="stat-val">{{ faq.length }}</p>
+            <p class="stat-key">FAQ</p>
+          </div>
         </div>
       </div>
       <div
@@ -136,14 +152,26 @@
           </tbody>
         </table>
       </div>
+      <div v-if="activeTab === 'messages'">
+        <FeedbackMessages :messages="messages"/>
+      </div>
+      <div v-if="activeTab === 'faq'">
+        <CreateFAQ :faqs="faq"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 import pageLoader from "@/mixins/pageLoader";
+import FeedbackMessages from "../components/AdminComponents/FeedbackMessages.vue"
+import CreateFAQ from "../components/AdminComponents/CreateFAQ.vue"
 export default {
+  components: {
+    FeedbackMessages,
+    CreateFAQ
+  },
   data() {
     return {
       activeTab: "members",
@@ -156,9 +184,9 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       meetups: (state) => state.meetups.items,
-
+      messages: (state) => state.feedback.items,
+      faq: (state) => state.faq.items,
       pagination: (state) => state.meetups.pagination,
-      // registeredMembers: (state) => state.auth.registeredUsers
     }),
   },
   created() {
@@ -168,10 +196,9 @@ export default {
     this.$store
       .dispatch("auth/getUsers")
       .then((allMembers) => (this.registeredMembers = allMembers));
+    this.$store.dispatch("feedback/fetchFeedbackMessages");
+    this.$store.dispatch("faq/fetchQuestions");
 
-    // this.$store
-    //   .dispatch("stats/fetchAllStats")
-    //   .then((stats) => (this.meetups = stats.meetups));
     const { pageSize, pageNum } = this.$route.query;
 
     if (pageSize && pageNum) {
@@ -184,8 +211,6 @@ export default {
         console.error(err);
         this.pageLoader_resolveData();
       });
-
-    // console.log("The meetups: " + this.meetups);
   },
   methods: {
     showDeleteMeetupWarning(e, meetupId) {
@@ -330,5 +355,8 @@ body {
   margin-bottom: 20px;
   padding: 20px;
   background-color: #f1f1f1;
+}
+table{
+  width: 100%;
 }
 </style>

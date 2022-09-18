@@ -1,0 +1,121 @@
+<template>
+  <div class="center">
+    <div class="columns is-8 is-variable">
+      <table class="table messages-table">
+        <thead>
+          <tr>
+            <th scope="col">Questions</th>
+            <th scope="col">Answers</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="faq in faqs" :key="faq.id">
+            <td>
+              <b>{{ faq.question }}</b>
+            </td>
+            <td>{{ faq.response }}</td>
+            <td>
+              <a
+                @click.prevent="deleteQuestion(faq.id)"
+                class="button is-danger"
+                >Delete</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <form class="column is-one-third has-text-left">
+      <div class="field">
+        <label class="label">Question</label>
+        <div class="control">
+          <textarea
+            v-model="form.question"
+            class="textarea is-medium"
+          ></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Answer</label>
+        <div class="control">
+          <textarea
+            v-model="form.response"
+            class="textarea is-medium"
+            placeholder="Write your asnwer"
+          ></textarea>
+        </div>
+      </div>
+      <div class="control">
+        <button
+          type="button"
+          @click="addQuestion"
+          class="button is-link is-fullwidth has-text-weight-medium is-medium"
+        >
+          Add question
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+import { mapActions } from "vuex";
+export default {
+  props: {
+    faqs: [],
+  },
+  data() {
+    return {
+      form: {
+        question: null,
+        response: null,
+      },
+    };
+  },
+  methods: {
+    ...mapActions("faq", ["createQuestion"]),
+    addQuestion() {
+      const question = this.form;
+      this.createQuestion(question)
+        .then((res) => {
+          this.form.question = null;
+          this.form.response = null;
+           this.$store
+          .dispatch("faq/fetchQuestions")
+          .then((faqs) => (this.faqs = faqs));
+          this.$toasted.success("Question Added Succesfully!", {
+            duration: 3000,
+          });
+        })
+        .catch((err) => console.log(err));
+    },
+    deleteQuestion(qId) {
+      this.$store.dispatch("faq/deleteQuestion", qId).then(() => {
+        this.$store
+          .dispatch("faq/fetchQuestions")
+          .then((faqs) => (this.faqs = faqs));
+        this.$toasted.success("Question Deleted Succesfully!", {
+          duration: 3000,
+        });
+      });
+    },
+  },
+};
+</script>
+
+<style scoped>
+.center {
+  display: flex;
+  justify-content: space-between;
+}
+form {
+  /* border: 1px solid rgb(147, 147, 147); */
+  box-shadow: 0px 1px 6px #111;
+  padding: 20px;
+}
+th,
+tr {
+  width: 200px;
+}
+</style>

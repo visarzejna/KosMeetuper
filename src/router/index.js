@@ -13,6 +13,8 @@ import PageAdminDashboard from '@/pages/PageAdminDashboard'
 import PageNotFound from '@/pages/PageNotFound'
 import PageNotAuthenticated from '@/pages/PageNotAuthenticated'
 import PageMeetupEdit from '@/pages/PageMeetupEdit'
+import PageContactUs from '@/pages/PageContactUs'
+import PageFAQ from '@/pages/PageFAQ'
 
 Vue.use(Router)
 
@@ -50,6 +52,16 @@ const router = new Router({
       path: '/meetups/:id',
       name: 'PageMeetupDetail',
       component: PageMeetupDetail
+    },
+    {
+      path: '/contact',
+      name: 'PageContactUs',
+      component: PageContactUs
+    },
+    {
+      path: '/faq',
+      name: 'PageFAQ',
+      component: PageFAQ
     },
     {
       path: '/meetups/:meetupId/edit',

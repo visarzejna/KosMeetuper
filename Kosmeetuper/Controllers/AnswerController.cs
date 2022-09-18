@@ -20,7 +20,10 @@ namespace Kosmeetuper.Controllers
                 Question = answer.Question,
                 Response = answer.Response,
             };
-
+            if (newAnswer == null)
+            {
+                return BadRequest("Empty answer!");
+            }
             return Created("Feedback sent succesfully.", _repository.Add(newAnswer));
         }
 
@@ -28,6 +31,10 @@ namespace Kosmeetuper.Controllers
         public JsonResult Get()
         {
             var answer = _repository.GetAll();
+            if (answer == null)
+            {
+                return new JsonResult("No Messages in the database!");
+            }
             return new JsonResult(answer);
         }
 

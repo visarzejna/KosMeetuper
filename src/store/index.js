@@ -7,6 +7,9 @@ import categories from './modules/categories'
 import auth from './modules/auth'
 import stats from './modules/stats'
 import meta from './modules/meta'
+import feedback from './modules/feedback'
+import faq from './modules/faq'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -17,6 +20,8 @@ export default new Vuex.Store({
     auth,
     stats,
     meta,
+    feedback,
+    faq
   },
   mutations: {
     setItems (state, {resource, items}) {
