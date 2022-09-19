@@ -45,3 +45,26 @@ exports.createThread = function (req, res) {
     return res.json(createdThread)
   });
 }
+
+
+exports.deleteThread = function(req, res) {
+  const {id} = req.params;
+  const user = req.user;
+
+  Thread.findById(id, (errors, thread) => {
+    if (errors) {
+      return res.status(422).send({errors})
+    }
+
+    if (thread.user != user.id && user.role === 'user') {
+      return res.status(401).send({errors: {message: 'Not Authorized!'}})
+    }
+    thread.remove((errors, _) => {
+      if (errors) {
+        console.log(errors.message)
+        return res.status(422).send({errors})
+      }
+      return res.json(thread._id);
+    })
+  })
+}

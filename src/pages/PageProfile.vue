@@ -147,8 +147,7 @@
                 </div>
               </div>
               <footer class="card-footer">
-                <a class="card-footer-item">Share</a>
-                <a class="card-footer-item">Delete</a>
+                <a @click="deleteThread(thread._id)" class="card-footer-item">Delete</a>
               </footer>
             </div>
             <br />
@@ -176,8 +175,7 @@
                 </div>
               </div>
               <footer class="card-footer">
-                <a class="card-footer-item">Share</a>
-                <a class="card-footer-item">Delete</a>
+                <a @click="deletePost(post._id)" class="card-footer-item">Delete</a>
               </footer>
             </div>
             <br />
@@ -250,6 +248,25 @@ export default {
           .catch((err) => console.log(err));
       }
     },
+    deleteThread(tId) {
+      this.$store.dispatch("threads/deleteThread", tId).then((threadId) => {
+        this.$store.dispatch('stats/fetchUserStats')
+         
+        this.$toasted.success("Thread Deleted Succesfully!", {
+          duration: 3000,
+        });
+      });
+    },
+    deletePost(postId) {
+      this.$store.dispatch("threads/deletePost", postId).then((id) => {
+        //  this.$router.go(0)
+        this.$store.dispatch('stats/fetchUserStats')
+
+         this.$toasted.success("Thread Deleted Succesfully!", {
+          duration: 3000,
+        });
+      });
+    }
   },
 };
 </script>

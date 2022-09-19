@@ -57,8 +57,23 @@ export default {
         posts.unshift(post)
         commit('savePostToThread', {posts, index: threadIndex})
       }
-    }
+    },
+    deleteThread (_, threadId) {
+      return axiosInstance.delete(`/api/v1/threads/${threadId}`)
+        .then((res) => {
+          const threadId = res.data
+          return threadId
+        })
+      },
+      deletePost (_, postId) {
+        return axiosInstance.delete(`/api/v1/posts/${postId}`)
+          .then((res) => {
+            const postId = res.data
+            return postId
+          })
+        }
   },
+  
   mutations: {
     savePostToThread (state, {posts, index}) {
       Vue.set(state.items[index], 'posts', posts)
