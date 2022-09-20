@@ -15,11 +15,12 @@ export default {
     posts: {
       data: [],
       count: null,
-    }
+    },
+    joinedMeetups: []
   },
   actions: {
     fetchUserStats ({commit}) {
-      return axiosInstance.get('/api/v1/users/me/activity')
+      axiosInstance.get('/api/v1/users/me/activity')
         .then(res => {
           const stats = res.data
           commit('setStats', stats)
@@ -32,6 +33,14 @@ export default {
           const stats = res.data
           commit('setStats', stats)
           return stats
+        })
+    },
+    fetchUserJoinedMeetups({commit}){
+      return axiosInstance.get('/api/v1/users/me/joinedMeetups')
+        .then(res => {
+          const meetups = res.data
+          commit('setJoinedMeetups', meetups)
+          return meetups
         })
     },
     updateStats ({state, commit}, meetupId) {
@@ -51,6 +60,9 @@ export default {
   mutations: {
     setStats (state, stats) {
       return Object.assign(state, {}, stats)
+    },
+    setJoinedMeetups (state, meetups) {
+      state.joinedMeetups = meetups
     },
     deleteResource (state, {resource, itemId}) {
       const index = state[resource].data.findIndex(item => item._id === itemId)

@@ -25,7 +25,7 @@
                     <button @click="cancelCategory" class="delete"></button>
                   </span>
                 </div>
-                <span>Meetups in {{ meetups[0].location }}</span>
+                <span>Meetups in {{ searchedLocation }}</span>
               </div>
             </div>
             <div class="level-right">
@@ -124,7 +124,7 @@ export default {
   methods: {
     fetchMeetups() {
       if (this.searchedLocation) {
-        // this.filter["location"] = processLocation(this.searchedLocation)
+        this.filter["location"] = processLocation(this.searchedLocation)
       }
       if (this.category) {
         this.filter["category"] = this.category;

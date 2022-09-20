@@ -22,6 +22,9 @@
             <p class="tagline">
               {{ user.info }}
             </p>
+            <p class="secondary-text">
+              Created on: {{ user.createdAt | formatDate }}
+            </p>
           </div>
           <!-- TODO: Set activeTab variable to 'meetups' and class to 'isActive' when activeTab === 'meetups' -->
           <div
@@ -54,6 +57,15 @@
             <!-- TODO: Display Posts count -->
             <p class="stat-val">{{ postsCount }}</p>
             <p class="stat-key">Posts</p>
+          </div>
+          <div
+            @click="activeTab = 'joinedMeetups'"
+            :class="{ isActive: activeTab === 'joinedMeetups' }"
+            class="stats-tab column is-2-tablet is-4-mobile has-text-centered"
+          >
+            <!-- TODO: Display Posts count -->
+            <p class="stat-val">{{ user.joinedMeetups.length }}</p>
+            <p class="stat-key">Going to</p>
           </div>
         </div>
       </div>
@@ -147,7 +159,9 @@
                 </div>
               </div>
               <footer class="card-footer">
-                <a @click="deleteThread(thread._id)" class="card-footer-item">Delete</a>
+                <a @click="deleteThread(thread._id)" class="card-footer-item"
+                  >Delete</a
+                >
               </footer>
             </div>
             <br />
@@ -175,7 +189,9 @@
                 </div>
               </div>
               <footer class="card-footer">
-                <a @click="deletePost(post._id)" class="card-footer-item">Delete</a>
+                <a @click="deletePost(post._id)" class="card-footer-item"
+                  >Delete</a
+                >
               </footer>
             </div>
             <br />
@@ -183,20 +199,28 @@
         </template>
         <div v-else class="stats-error">No posts currently created</div>
       </div>
+      <div v-if="activeTab === 'joinedMeetups'" class="columns is-mobile is-multiline">
+        <template>
+        <MeetupsComponent :meetups="joinedMeetups"/>
+        </template>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import UserUpdateModal from "@/components/UserUpdateModal";
+import MeetupsComponent from "@/components/ProfileMeetupsComponent";
 import { mapState } from "vuex";
 export default {
   components: {
     UserUpdateModal,
+    MeetupsComponent
   },
   data() {
     return {
       activeTab: "meetups",
+      // joinedMeetups: []
     };
   },
   computed: {
@@ -205,6 +229,7 @@ export default {
       meetups: (state) => state.stats.meetups.data,
       threads: (state) => state.stats.threads.data,
       posts: (state) => state.stats.posts.data,
+      joinedMeetups: (state) => state.stats.joinedMeetups,
       meetupsCount: (state) => state.stats.meetups.count,
       threadsCount: (state) => state.stats.threads.count,
       postsCount: (state) => state.stats.posts.count,
@@ -214,10 +239,11 @@ export default {
     this.$store
       .dispatch("stats/fetchUserStats")
       .then((stats) => console.log(stats));
+    this.$store.dispatch("stats/fetchUserJoinedMeetups")
   },
   methods: {
     updateUser({ user, done }) {
-      this.$store
+      this.$store 
         .dispatch("auth/updateUser", user)
         .then(() => {
           this.$toasted.success("Profile Successfuly Updated", {
@@ -230,6 +256,7 @@ export default {
           done();
         });
     },
+
     showDeleteMeetupWarning(e, meetupId) {
       e.stopPropagation();
       const isConfirm = confirm(
@@ -250,8 +277,8 @@ export default {
     },
     deleteThread(tId) {
       this.$store.dispatch("threads/deleteThread", tId).then((threadId) => {
-        this.$store.dispatch('stats/fetchUserStats')
-         
+        this.$store.dispatch("stats/fetchUserStats");
+
         this.$toasted.success("Thread Deleted Succesfully!", {
           duration: 3000,
         });
@@ -260,13 +287,13 @@ export default {
     deletePost(postId) {
       this.$store.dispatch("threads/deletePost", postId).then((id) => {
         //  this.$router.go(0)
-        this.$store.dispatch('stats/fetchUserStats')
+        this.$store.dispatch("stats/fetchUserStats");
 
-         this.$toasted.success("Thread Deleted Succesfully!", {
+        this.$toasted.success("Thread Deleted Succesfully!", {
           duration: 3000,
         });
       });
-    }
+    },
   },
 };
 </script>
@@ -318,7 +345,9 @@ body {
   font-size: 1.4em;
   font-weight: 200;
 }
-
+.secondary-text {
+  color: lightgray;
+}
 .section.profile-heading
   .column.is-2-tablet.has-text-centered
   + .has-text-centered {

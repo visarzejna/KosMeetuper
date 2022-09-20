@@ -211,7 +211,7 @@ function fetchPostByUserQuery(userId) {
       }
 
       return { data: results[0].posts, count: 0 };
-    });
+  });
 }
 
 exports.getUserActivity = function (req, res) {
@@ -230,6 +230,18 @@ exports.getUserActivity = function (req, res) {
       res.status(422).send({ err });
     });
 };
+
+exports.getJoinedMeetups = function (req, res) {
+  const userId = req.user._id;
+
+  Meetup.find({joinedPeople: { $in: userId} }).exec((errors, meetups) => {
+    if(errors) {
+      return res.status(422).send({errors})
+    }
+    return res.json(meetups)
+  })
+
+}
 
 exports.updateUser = (req, res) => {
   const userId = req.params.id;

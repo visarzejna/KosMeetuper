@@ -115,6 +115,7 @@ userSchema.methods.toAuthJSON = function () {
     info: this.info,
     email: this.email,
     role: this.role,
+    createdAt: this.createdAt,
     joinedMeetups: this.joinedMeetups,
     token: this.generateJWT(),
   };
