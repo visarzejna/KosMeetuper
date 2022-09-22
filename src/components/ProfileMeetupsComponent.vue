@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div
+  <div v-if="meetups.length > 0" class="container">
+    <div 
       v-for="meetup in meetups"
       :key="meetup._id"
       class="column is-3-tablet is-6-mobile"
@@ -36,6 +36,7 @@
       <br />
     </div>
   </div>
+  <div v-else><h1>No joined meetups Currently</h1></div>
 </template>
 
 <script>

@@ -64,7 +64,7 @@
             class="stats-tab column is-2-tablet is-4-mobile has-text-centered"
           >
             <!-- TODO: Display Posts count -->
-            <p class="stat-val">{{ user.joinedMeetups.length }}</p>
+            <p class="stat-val">{{ joinedMeetups.length }}</p>
             <p class="stat-key">Going to</p>
           </div>
         </div>

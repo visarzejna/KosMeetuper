@@ -44,7 +44,7 @@
           <a @click="openMore" class="navbar-link"> More </a>
 
           <div class="navbar-dropdown">
-            <a class="navbar-item"> About </a>
+            <router-link :to="{ name: 'PageAboutUs'}" class="navbar-item"> About </router-link>
             <router-link :to="{ name: 'PageFAQ'}" class="navbar-item"> FAQ </router-link>
             <hr class="navbar-divider" />
             <router-link :to="{ name: 'PageContactUs' }" class="navbar-item">

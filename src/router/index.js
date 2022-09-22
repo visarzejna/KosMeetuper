@@ -15,6 +15,7 @@ import PageNotAuthenticated from '@/pages/PageNotAuthenticated'
 import PageMeetupEdit from '@/pages/PageMeetupEdit'
 import PageContactUs from '@/pages/PageContactUs'
 import PageFAQ from '@/pages/PageFAQ'
+import PageAboutUs from '@/pages/PageAboutUs'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ const router = new Router({
       path: '/',
       name: 'PageHome',
       component: PageHome
+    },
+    {
+      path: '/about',
+      name: 'PageAboutUs',
+      component: PageAboutUs
     },
     {
       path: '/find/:category',
