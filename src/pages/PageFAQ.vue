@@ -1,12 +1,12 @@
 <template>
-  <div class="container" style="margin:30px ">
+  <div class="container" style="margin: 30px">
     <div><h1>Frequently Asked Questions (FAQ)</h1></div>
     <div v-if="faqs.length === 0"><h1>No Asked Questions</h1></div>
 
     <details v-else v-for="faq in faqs" :key="faq.id">
       <summary>{{ faq.question | capitalize }}</summary>
       <div className="answer">
-        <p>- {{ faq.response | capitalize}}</p>
+        <p>- {{ faq.response | capitalize }}</p>
       </div>
     </details>
 
@@ -17,17 +17,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
   computed: {
-     ...mapState({
-        faqs: (state) => state.faq.items,
-    })
-    
+    ...mapState({
+      faqs: (state) => state.faq.items,
+    }),
   },
   created() {
-   
-
     this.$store.dispatch("faq/fetchQuestions");
   },
 };
@@ -84,7 +81,7 @@ details[open] summary ~ * {
   }
 }
 .answer {
-      padding: 50px;
+  padding: 50px;
 }
 .answer p {
   font-size: 25px;

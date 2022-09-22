@@ -4,7 +4,66 @@ const Thread = require("../models/threads");
 const Post = require("../models/posts");
 const Category = require("../models/categories");
 const passport = require("passport");
+const ConfirmationHash = require("../models/confirmation-hash");
+const nodemailer = require("nodemailer");
+const config = require("../config/dev");
+const ConnectMongoDBSession = require("connect-mongodb-session");
 
+function sendConfirmation({ toUser, hash }, callback) {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: config.GOOGLE_USER,
+      pass: config.GOOGLE_PASSWORD,
+    },
+  });
+  const message = {
+    from: config.GOOGLE_USER,
+    // to: toUser.email  uncomment after test
+    to: config.GOOGLE_USER,
+    subject: "Kosmeetuper - Activate your account",
+    html: `
+    <h3> Hello ${toUser.name} </h3>
+    <p>Thank you for registering into Kosmeetuper. Just one last step is laying ahead of you to join our awesome community.</p>
+    <p>To activate your account please follow this link: <a target="_" href="${config.DOMAIN}/users/${hash}/activate">${config.DOMAIN}/activate </a></p>
+    <p>Cheers</p>
+    <p>Your Kosmeetuper Team</p>
+  `,
+  };
+  transporter.sendMail(message, function (err, info) {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, info);
+    }
+  });
+}
+
+exports.activateUser = function (req, res) {
+  const { hash } = req.params;
+
+  ConfirmationHash.findById(hash)
+    .populate("user")
+    .exec((errors, foundHash) => {
+      if (errors) {
+        return res.status(422).send({ errors });
+      }
+
+      User.findByIdAndUpdate(
+        foundHash.user._id,
+        { $set: { active: true } },
+        { new: true },
+        (errors, updatedUser) => {
+          if (errors) {
+            console.log(errors.message)
+            return res.status(422).send({ errors });
+          }
+          foundHash.remove(() => {});
+          return res.json(updatedUser);
+        }
+      );
+    });
+};
 
 exports.getUsers = function (req, res) {
   User.find({}).exec((errors, users) => {
@@ -22,8 +81,6 @@ exports.getCurrentUser = function (req, res, next) {
     return res.sendStatus(422);
   }
 
-  // For Session Auth!
-  // return res.json(user);
   return res.json(user.toAuthJSON());
 };
 
@@ -62,8 +119,19 @@ exports.register = function (req, res) {
     if (errors) {
       return res.status(422).json({ errors });
     }
-
-    return res.json(savedUser);
+    const hash = new ConfirmationHash({ user: savedUser });
+    hash.save((errors, createdHash) => {
+      if (errors) {
+        return res.status(422).json({ errors });
+      }
+      sendConfirmation({ toUser: savedUser, hash: hash.id }, (error, info) => {
+        if (errors) {
+          return res.status(422).json({ errors });
+        }
+        return res.json(savedUser);
+      });
+      return res.json(savedUser);
+    });
   });
 };
 
@@ -94,14 +162,15 @@ exports.login = function (req, res, next) {
     }
 
     if (passportUser) {
-      // Only For Session Auth!!!
-      // req.login(passportUser, function (err) {
-      //   if (err) { next(err); }
-
-      //   return res.json(passportUser)
-      // });
-
-      return res.json(passportUser.toAuthJSON());
+      if (passportUser.active) {
+        return res.json(passportUser.toAuthJSON());
+      } else {
+        return res.status(422).send({
+          errors: {
+            message: "Please check your email to activate your account!",
+          },
+        });
+      }
     } else {
       return res.status(422).send({
         errors: {
@@ -116,17 +185,6 @@ exports.logout = function (req, res) {
   req.logout();
   return res.json({ status: "Session destroyed!" });
 };
-
-// @facet
-// Processes multiple aggregation pipelines within a single stage on the same set of input documents.
-// Each sub-pipeline has its own field in the output document where its results are stored as an array of documents.
-
-// meetups: find all of the meetups where meetupCreator is loggedIn user
-//          find only 5 meetups
-//          sort meetups by newest ones
-
-// meetupsCount: find all of the meetups where meetupCreator is loggedIn user
-//               don't return data but count of all meetups
 
 function fetchMeetupsByUserQuery(userId) {
   return Meetup.aggregate([
@@ -211,7 +269,7 @@ function fetchPostByUserQuery(userId) {
       }
 
       return { data: results[0].posts, count: 0 };
-  });
+    });
 }
 
 exports.getUserActivity = function (req, res) {
@@ -234,14 +292,13 @@ exports.getUserActivity = function (req, res) {
 exports.getJoinedMeetups = function (req, res) {
   const userId = req.user._id;
 
-  Meetup.find({joinedPeople: { $in: userId} }).exec((errors, meetups) => {
-    if(errors) {
-      return res.status(422).send({errors})
+  Meetup.find({ joinedPeople: { $in: userId } }).exec((errors, meetups) => {
+    if (errors) {
+      return res.status(422).send({ errors });
     }
-    return res.json(meetups)
-  })
-
-}
+    return res.json(meetups);
+  });
+};
 
 exports.updateUser = (req, res) => {
   const userId = req.params.id;

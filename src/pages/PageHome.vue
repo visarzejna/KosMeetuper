@@ -15,7 +15,6 @@
         </router-link>
       </div>
       <div class="row columns is-multiline">
-        <!-- Iterate your meetups here! -->
         <MeetupItem v-for="meetup in meetups"
                     :key="meetup._id"
                     :meetup="meetup" />

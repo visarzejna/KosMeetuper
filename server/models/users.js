@@ -30,6 +30,10 @@ const userSchema = new Schema({
     maxlength: [32, "Too long, max is 32 characters"],
     required: "Password is required",
   },
+  active: {
+    type: Boolean,
+    default: false
+  },
   role: {
     type: String,
     default: "user",

@@ -94,7 +94,6 @@
           </div>
           <p class="has-text-grey">
             <router-link :to="{name:'PageLogin'}">Login</router-link> &nbsp;·&nbsp;
-            <a>Sign Up With Google</a> &nbsp;·&nbsp;
             <a href="../">Need Help?</a>
           </p>
         </div>
@@ -106,6 +105,7 @@
 <script>
   import { required, email, minLength, url, sameAs } from 'vuelidate/lib/validators'
   import { supportedFileType } from '@/helpers/validators'
+  import { USER_REGISTERED } from '@/helpers/redirectMessages'
   export default {
     data () {
       return {
@@ -149,7 +149,8 @@
       register () {
         this.$v.form.$touch()
         this.$store.dispatch('auth/registerUser', this.form)
-        .then(() => this.$router.push('/login'))
+       .then(() => {
+            this.$router.push({path: '/login', query: { messageType: USER_REGISTERED.type}})})
         .catch((errorMessage) => {
             this.$toasted.error(errorMessage , {
               duration: 5000

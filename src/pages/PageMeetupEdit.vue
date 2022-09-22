@@ -7,7 +7,6 @@
             {{ meetup.startDate | formatDate }}
           </h2>
           <div class="field">
-            <!-- TODO: Bind meetup title -->
             <input
               v-model="meetup.title"
               class="title input w-50"
@@ -17,14 +16,12 @@
           <article class="media v-center">
             <figure class="media-left">
               <p class="image is-64x64">
-                <!-- TODO: Display meetup creator avatar -->
                 <img class="is-rounded" :src="meetupCreator.avatar" />
               </p>
             </figure>
             <div class="media-content">
               <div class="content">
                 <p>
-                  <!-- TODO: Display meetup creator name -->
                   Created by <strong>{{ meetupCreator.name }}</strong>
                 </p>
               </div>
@@ -51,12 +48,6 @@
                 <div class="meetup-side-box-date m-b-sm">
                   <!-- TIMES START -->
                   <p><b>Time</b></p>
-                  <!-- TODO - OPTIONAL - Make dates and times working -->
-                  <!-- Implementation almost the same as in create meetup -->
-
-                  <!-- 1. Disable Dates -->
-                  <!-- 2. Set Date on @input event-->
-                  <!-- 3. Display actual meetup startDate in :value -->
                   <datepicker
                     @input="setDate"
                     :value="meetup.startDate"
@@ -64,8 +55,6 @@
                     :input-class="'input'"
                   ></datepicker>
                   <div class="field m-t-md">
-                    <!-- TODO: Implement @change Event -->
-                    <!-- TODO: Bind timeFrom value with v-model -->
                     <vue-timepicker
                       v-model="meetup.timeFrom"
                       @change="changeTime($event, 'timeFrom')"
@@ -73,8 +62,6 @@
                     ></vue-timepicker>
                   </div>
                   <div class="field">
-                    <!-- TODO: Implement @change Event -->
-                    <!-- TODO: Bind timeTo value with v-model -->
                     <vue-timepicker
                       v-model="meetup.timeTo"
                       @change="changeTime($event, 'timeTo')"
@@ -87,7 +74,6 @@
                   <p><b>Choose Category</b></p>
                   <div class="field">
                     <div class="select">
-                      <!-- TODO: Get Here Categories -->
                       <select v-model="meetup.category">
                         <option
                           v-for="category of categories"
@@ -103,7 +89,6 @@
                 <div class="meetup-side-box-place m-b-sm">
                   <p><b>How to find us</b></p>
                   <div class="field">
-                    <!-- TODO: Bind meetup location -->
                     <input
                       v-model="meetup.location"
                       class="input"
@@ -114,7 +99,6 @@
                 <div class="meetup-side-box-place m-b-sm">
                   <p><b>Image URL: </b></p>
                   <div class="field">
-                    <!-- TODO: Bind meetup location -->
                     <input
                       v-model="meetup.image"
                       class="input"
@@ -125,7 +109,6 @@
                 <div class="meetup-side-box-more-info">
                   <p><b>Additional Info</b></p>
                   <div class="field">
-                    <!-- TODO: Bind meetup short info -->
                     <textarea
                       v-model="meetup.shortInfo"
                       class="textarea"
@@ -135,14 +118,12 @@
                 </div>
               </div>
               <div class="meetup-side-box-map">
-                <!-- <img src="https://cnet2.cbsistatic.com/img/H_zPLL8-QTZOLxJvgHQ1Jkz0EgY=/830x467/2013/07/10/f0bcef02-67c2-11e3-a665-14feb5ca9861/maps_routemap.png" class="venueMap-mapImg span--100" alt="Location image of meetup venue"> -->
               </div>
             </aside>
           </div>
           <div class="column is-7 is-offset-1">
             <div class="content is-medium">
               <h3 class="title is-3">About the Meetup</h3>
-              <!-- TODO: Bind meetup description -->
               <textarea
                 v-model="meetup.description"
                 class="textarea"

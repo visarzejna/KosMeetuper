@@ -25,21 +25,23 @@
           </article>
         </div>
         <div class="is-pulled-right">
-          <!-- We will handle this later (: -->
           <button v-if="isMember" @click="leaveMeetup" class="button is-danger">
             Leave Meetup
           </button>
-          <router-link v-if="isMeetupOwner"
+          <router-link
+            v-if="isMeetupOwner"
             :to="{ name: 'PageMeetupEdit', params: { meetupId: meetup._id } }"
             class="button is-primary"
-            >Edit</router-link>
-            <a v-if="isMeetupOwner || role === 'admin'"
-                    @click.prevent="
-                      ($event) => showDeleteMeetupWarning($event, meetup._id)
-                    "
-                    class="button is-danger ml-1"
-                    >Delete</a
-                  >
+            >Edit</router-link
+          >
+          <a
+            v-if="isMeetupOwner || role === 'admin'"
+            @click.prevent="
+              ($event) => showDeleteMeetupWarning($event, meetup._id)
+            "
+            class="button is-danger ml-1"
+            >Delete</a
+          >
         </div>
       </div>
     </section>
@@ -67,13 +69,7 @@
                   <p>{{ meetup.shortInfo }}</p>
                 </div>
               </div>
-              <div class="meetup-side-box-map">
-                <!-- <img
-                  src="https://cnet2.cbsistatic.com/img/H_zPLL8-QTZOLxJvgHQ1Jkz0EgY=/830x467/2013/07/10/f0bcef02-67c2-11e3-a665-14feb5ca9861/maps_routemap.png"
-                  class="venueMap-mapImg span--100"
-                  alt="Location image of meetup venue" -->
-                <!-- /> -->
-              </div>
+              <div class="meetup-side-box-map"></div>
               <!-- Threads Start -->
               <p class="menu-label">Threads</p>
               <ul>
@@ -150,7 +146,7 @@ export default {
     return {
       threadPageNum: 1,
       threadPageSize: 5,
-      role: 'user'
+      role: "user",
     };
   },
   computed: {
@@ -188,8 +184,8 @@ export default {
   },
   created() {
     const meetupId = this.$route.params.id;
-    if(this.authUser){
-      this.role = this.authUser.role
+    if (this.authUser) {
+      this.role = this.authUser.role;
     }
     this.fetchMeetupById(meetupId);
     this.fetchThreadsHandler({ meetupId, init: true });
@@ -251,12 +247,12 @@ export default {
             this.$store.dispatch("stats/updateStats", id);
             this.$toasted.success("Meetup Deleted Succesfully!", {
               duration: 3000,
-            })
-            this.$router.go(-1)
+            });
+            this.$router.go(-1);
           })
           .catch((err) => console.log(err));
       }
-    }
+    },
   },
 };
 </script>

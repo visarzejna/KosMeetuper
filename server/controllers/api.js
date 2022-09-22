@@ -1,5 +1,4 @@
 const geoip = require('geoip-lite');
-// Run 'npm run-script updatedb' to update the data file
 const request = require('request');
 
 exports.getMeta = function(req, res) {

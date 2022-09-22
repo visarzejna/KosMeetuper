@@ -47,7 +47,6 @@
       <label class="title m-b-sm">Please Choose the Category.</label>
       <div class="m-b-lg">
         <div class="select">
-          <!-- TODO: Get Here Categories -->
           <select
             @blur="$v.form.category.$touch()"
             v-model="form.category"

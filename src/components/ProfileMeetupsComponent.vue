@@ -12,19 +12,16 @@
         <div class="card">
           <div class="card-image">
             <figure class="image is-4by3">
-              <!-- TODO: Display Meetup Image -->
               <img :src="meetup.image" />
             </figure>
           </div>
           <div class="card-content">
             <div class="media">
               <div class="media-content">
-                <!-- TODO: Display Meetup title -->
                 <p class="title is-4">{{ meetup.title }}</p>
               </div>
             </div>
             <div class="content">
-              <!-- TODO: Display Meetup shortInfo -->
               <p>
                 {{ meetup.shortInfo }}
               </p>
@@ -50,6 +47,5 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  /* flex-direction: row; */
 }
 </style>

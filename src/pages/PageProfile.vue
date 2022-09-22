@@ -5,20 +5,16 @@
         <div class="columns is-mobile is-multiline">
           <div class="column is-2">
             <figure class="image header-icon user-profile-image">
-              <!-- TODO: Get user avatar here -->
               <img class="is-rounded" :src="user.avatar" />
             </figure>
           </div>
           <div class="column is-4-tablet is-10-mobile name">
             <p>
-              <!-- TODO: Display user name here -->
               <span class="title is-bold">{{ user.name }}</span>
               <br />
-              <!-- Here will be user update functionality -->
               <UserUpdateModal :authUser="user" @userSubmitted="updateUser" />
               <br />
             </p>
-            <!-- TODO: User info Here if any -->
             <p class="tagline">
               {{ user.info }}
             </p>
@@ -26,35 +22,29 @@
               Created on: {{ user.createdAt | formatDate }}
             </p>
           </div>
-          <!-- TODO: Set activeTab variable to 'meetups' and class to 'isActive' when activeTab === 'meetups' -->
           <div
             @click="activeTab = 'meetups'"
             :class="{ isActive: activeTab === 'meetups' }"
             class="stats-tab column is-2-tablet is-4-mobile has-text-centered"
           >
-            <!-- TODO: Display Meetups count -->
             <p class="stat-val">{{ meetupsCount }}</p>
             <p class="stat-key">Meetups</p>
           </div>
 
-          <!-- TODO: Set activeTab variable to 'threads' and class to 'isActive' when activeTab === 'threads' -->
           <div
             @click="activeTab = 'threads'"
             :class="{ isActive: activeTab === 'threads' }"
             class="stats-tab column is-2-tablet is-4-mobile has-text-centered"
           >
-            <!-- TODO: Display Threads count -->
             <p class="stat-val">{{ threadsCount }}</p>
             <p class="stat-key">Threads</p>
           </div>
 
-          <!-- TODO: Set activeTab variable to 'posts' and class to 'isActive' when activeTab === 'posts' -->
           <div
             @click="activeTab = 'posts'"
             :class="{ isActive: activeTab === 'posts' }"
             class="stats-tab column is-2-tablet is-4-mobile has-text-centered"
           >
-            <!-- TODO: Display Posts count -->
             <p class="stat-val">{{ postsCount }}</p>
             <p class="stat-key">Posts</p>
           </div>
@@ -63,18 +53,15 @@
             :class="{ isActive: activeTab === 'joinedMeetups' }"
             class="stats-tab column is-2-tablet is-4-mobile has-text-centered"
           >
-            <!-- TODO: Display Posts count -->
             <p class="stat-val">{{ joinedMeetups.length }}</p>
             <p class="stat-key">Going to</p>
           </div>
         </div>
       </div>
-      <!-- TODO: Display this div when activeTab === 'meetups' -->
       <div
         v-if="activeTab === 'meetups'"
         class="columns is-mobile is-multiline"
       >
-        <!-- TODO: Iterate over meetups -->
         <template v-if="meetups && meetups.length > 0">
           <div
             v-for="meetup in meetups"
@@ -88,16 +75,13 @@
               <div class="card">
                 <div class="card-image">
                   <figure class="image is-4by3">
-                    <!-- TODO: Display Meetup Image -->
                     <img :src="meetup.image" />
                   </figure>
                 </div>
                 <div class="card-content">
                   <div class="media">
                     <div class="media-content">
-                      <!-- TODO: Display Meetup title -->
                       <p class="title is-4">{{ meetup.title }}</p>
-                      <!-- TODO: Display Category name -->
                       <p class="subtitle is-6">
                         <span class="tag is-dark subtitle">{{
                           meetup.category.name | capitalize
@@ -106,7 +90,6 @@
                     </div>
                   </div>
                   <div class="content">
-                    <!-- TODO: Display Meetup shortInfo -->
                     <p>
                       {{ meetup.shortInfo }}
                     </p>
@@ -136,12 +119,10 @@
         </template>
         <div v-else class="stats-error">No meetups currently created</div>
       </div>
-      <!-- TODO: Display this div when activeTab === 'threads' -->
       <div
         v-if="activeTab === 'threads'"
         class="columns is-mobile is-multiline"
       >
-        <!-- TODO: Iterate over threads -->
         <template v-if="threads && threads.length > 0">
           <div
             v-for="thread in threads"
@@ -153,7 +134,6 @@
               <div class="card-content">
                 <div class="media">
                   <div class="media-content">
-                    <!-- TODO: Display thread thread title -->
                     <p class="title is-4">{{ thread.title }}</p>
                   </div>
                 </div>
@@ -169,9 +149,7 @@
         </template>
         <div v-else class="stats-error">No Threads currently created</div>
       </div>
-      <!-- TODO: Display this div when activeTab === 'posts' -->
       <div v-if="activeTab === 'posts'" class="columns is-mobile is-multiline">
-        <!-- TODO: Iterate over posts -->
         <template v-if="posts && posts.length > 0">
           <div
             v-for="post in posts"
@@ -183,7 +161,6 @@
               <div class="card-content">
                 <div class="media">
                   <div class="media-content">
-                    <!-- TODO: Display post text -->
                     <p class="title is-4">{{ post.text }}</p>
                   </div>
                 </div>
@@ -199,9 +176,12 @@
         </template>
         <div v-else class="stats-error">No posts currently created</div>
       </div>
-      <div v-if="activeTab === 'joinedMeetups'" class="columns is-mobile is-multiline">
+      <div
+        v-if="activeTab === 'joinedMeetups'"
+        class="columns is-mobile is-multiline"
+      >
         <template>
-        <MeetupsComponent :meetups="joinedMeetups"/>
+          <MeetupsComponent :meetups="joinedMeetups" />
         </template>
       </div>
     </div>
@@ -215,12 +195,11 @@ import { mapState } from "vuex";
 export default {
   components: {
     UserUpdateModal,
-    MeetupsComponent
+    MeetupsComponent,
   },
   data() {
     return {
       activeTab: "meetups",
-      // joinedMeetups: []
     };
   },
   computed: {
@@ -239,11 +218,11 @@ export default {
     this.$store
       .dispatch("stats/fetchUserStats")
       .then((stats) => console.log(stats));
-    this.$store.dispatch("stats/fetchUserJoinedMeetups")
+    this.$store.dispatch("stats/fetchUserJoinedMeetups");
   },
   methods: {
     updateUser({ user, done }) {
-      this.$store 
+      this.$store
         .dispatch("auth/updateUser", user)
         .then(() => {
           this.$toasted.success("Profile Successfuly Updated", {
