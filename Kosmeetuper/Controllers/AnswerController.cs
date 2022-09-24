@@ -1,5 +1,6 @@
 ﻿using Kosmeetuper.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Kosmeetuper.Controllers
 {
@@ -19,6 +20,7 @@ namespace Kosmeetuper.Controllers
             {
                 Question = answer.Question,
                 Response = answer.Response,
+                CreatedAt = DateTime.Now
             };
             if (newAnswer == null)
             {

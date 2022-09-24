@@ -18,5 +18,8 @@ namespace Kosmeetuper.Models
 
         [Required(ErrorMessage = "Message is required.")]
         public string MessageDescription { get; set; }
+
+        public DateTime CreatedAt{ get; set; }
+
     }
 }

@@ -6,6 +6,7 @@
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Message</th>
+            <th scope="col">Created</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -14,6 +15,7 @@
             <td><b>{{ message.name }}</b></td>
             <td>{{ message.email }}</td>
             <td class="breakLine" style="width:200px">{{ message.messageDescription }}</td>
+            <td class="breakLine" style="width:200px">{{ message.createdAt | fromNow }}</td>
             <td>
               <a
                   @click.prevent="deleteMessage(message.id)"

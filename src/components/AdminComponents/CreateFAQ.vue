@@ -6,6 +6,7 @@
           <tr>
             <th scope="col">Questions</th>
             <th scope="col">Answers</th>
+            <th scope="col">Created</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -15,6 +16,7 @@
               <b>{{ faq.question }}</b>
             </td>
             <td>{{ faq.response }}</td>
+            <td>{{ faq.createdAt | fromNow }}</td>
             <td>
               <a
                 @click.prevent="deleteQuestion(faq.id)"

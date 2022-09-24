@@ -1,5 +1,6 @@
 ﻿using Kosmeetuper.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Kosmeetuper.Controllers
 {
@@ -19,12 +20,10 @@ namespace Kosmeetuper.Controllers
             {
                 Name = feedback.Name,
                 Email = feedback.Email,
-                MessageDescription = feedback.MessageDescription
+                MessageDescription = feedback.MessageDescription,
+                CreatedAt = DateTime.Now
+
             };
-            // if(newFeedback == null)
-            // {
-            //     return BadRequest("Didnt recieve any message!");
-            // }
 
             return Created("Feedback sent succesfully.", _repository.Add(newFeedback));
         }
