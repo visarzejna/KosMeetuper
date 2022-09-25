@@ -61,7 +61,17 @@
                 <div class="field">
                   <label class="label">Name</label>
                   <div class="control">
-                    <input v-model="form.Name" class="input is-medium" type="text" />
+                    <input
+                      v-model="form.Name"
+                      @blur="$v.form.Name.$touch()"
+                      class="input is-medium"
+                      type="text"
+                    />
+                    <div v-if="$v.form.Name.$error" class="form-error">
+                      <span v-if="!$v.form.Name.required" class="help is-danger"
+                        >Name is required</span
+                      >
+                    </div>
                   </div>
                 </div>
                 <div class="field">
@@ -69,9 +79,20 @@
                   <div class="control">
                     <input
                       v-model="form.Email"
+                      @blur="$v.form.Email.$touch()"
                       class="input is-medium"
                       type="text"
                     />
+                    <div v-if="$v.form.Email.$error" class="form-error">
+                      <span
+                        v-if="!$v.form.Email.required"
+                        class="help is-danger"
+                        >Email is required</span
+                      >
+                      <span v-if="!$v.form.Email.email" class="help is-danger"
+                        >Email address is not valid</span
+                      >
+                    </div>
                   </div>
                 </div>
                 <div class="field">
@@ -79,13 +100,24 @@
                   <div class="control">
                     <textarea
                       v-model="form.MessageDescription"
+                      @blur="$v.form.MessageDescription.$touch()"
                       class="textarea is-medium"
                     ></textarea>
+                    <div
+                      v-if="$v.form.MessageDescription.$error"
+                      class="form-error"
+                    >
+                      <span
+                        v-if="!$v.form.MessageDescription.required"
+                        class="help is-danger"
+                        >Message is required</span
+                      >
+                    </div>
                   </div>
                 </div>
                 <div class="control">
                   <button
-                  type="button"
+                    type="button"
                     @click="sendMessage"
                     class="button is-link is-fullwidth has-text-weight-medium is-medium"
                   >
@@ -102,7 +134,8 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import { required, email } from "vuelidate/lib/validators";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -113,19 +146,38 @@ export default {
       },
     };
   },
+  validations: {
+    form: {
+      Name: {
+        required,
+      },
+      Email: {
+        required,
+        email,
+      },
+      MessageDescription: {
+        required,
+      },
+    },
+  },
   methods: {
-    ...mapActions('feedback', ['createFeedbackMessage']),
+    ...mapActions("feedback", ["createFeedbackMessage"]),
     sendMessage() {
-        const feedback = this.form;
-        console.log('The message from page: ' + feedback.Name)
-         this.createFeedbackMessage(feedback)
-        .then((res) => {
-          this.form.Name = null
-          this.form.Email = null
-          this.form.MessageDescription = null
-          this.$toasted.success("Message Sent Succesfully!", { duration: 3000 })  
+      this.$v.form.$touch();
+      this.createFeedbackMessage(this.form)
+        .then(() => {
+          this.form.Name = null;
+          this.form.Email = null;
+          this.form.MessageDescription = null;
+          this.$toasted.success("Message Sent Succesfully!", {
+            duration: 3000,
+          });
         })
-        .catch(err => console.log(err));
+        .catch((errorMessage) => {
+          this.$toasted.error("Make sure you didn't miss any required field", {
+            duration: 5000,
+          });
+        });
     },
   },
 };

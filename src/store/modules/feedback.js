@@ -1,5 +1,6 @@
 import axiosInstance from "@/services/axios";
 import axios from "axios";
+import { rejectError } from '../../helpers/index'
 
 export default {
   namespaced: true,
@@ -28,9 +29,7 @@ export default {
       return axios
         .post("http://localhost:5000/api/v1/feedback", messageToCreate)
         .then((res) => res.data)
-        .catch((errors) => {
-            console.log(errors)
-          });
+        .catch(err => rejectError(err));
     },
     deleteMessage({rootState}, messageId) {
       const user = rootState.auth.user;

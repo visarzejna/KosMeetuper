@@ -137,7 +137,7 @@
         },
         password: {
           required,
-          minLength: minLength(6)
+          minLength: minLength(4)
         },
         passwordConfirmation: {
           required,

@@ -36,6 +36,14 @@
             <p class="stat-val">{{ faq.length }}</p>
             <p class="stat-key">FAQ</p>
           </div>
+          <div
+            @click="activeTab = 'categories'"
+            :class="{ isActive: activeTab === 'categories' }"
+            class="stats-tab column is-2-tablet is-4-mobile has-text-centered"
+          >
+            <p class="stat-val">{{ categories.length }}</p>
+            <p class="stat-key">Meetup Categories</p>
+          </div>
         </div>
       </div>
       <div
@@ -158,6 +166,9 @@
       <div v-if="activeTab === 'faq'">
         <CreateFAQ :faqs="faq"/>
       </div>
+      <div v-if="activeTab === 'categories'">
+        <Categories :categories="categories" />
+      </div>
     </div>
   </div>
 </template>
@@ -167,10 +178,12 @@ import { mapActions, mapState } from "vuex";
 import pageLoader from "@/mixins/pageLoader";
 import FeedbackMessages from "../components/AdminComponents/FeedbackMessages.vue"
 import CreateFAQ from "../components/AdminComponents/CreateFAQ.vue"
+import Categories from "../components/AdminComponents/Categories.vue"
 export default {
   components: {
     FeedbackMessages,
-    CreateFAQ
+    CreateFAQ,
+    Categories
   },
   data() {
     return {
@@ -184,6 +197,7 @@ export default {
     ...mapState({
       user: (state) => state.auth.user,
       meetups: (state) => state.meetups.items,
+      categories: (state) => state.categories.items,
       messages: (state) => state.feedback.items,
       faq: (state) => state.faq.items,
       pagination: (state) => state.meetups.pagination,

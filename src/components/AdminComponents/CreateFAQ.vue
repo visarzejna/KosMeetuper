@@ -1,6 +1,6 @@
 <template>
   <div class="center">
-    <div class="columns is-8 is-variable">
+    <!-- <div class="columns is-8 is-variable"> -->
       <table class="table messages-table">
         <thead>
           <tr>
@@ -27,7 +27,7 @@
           </tr>
         </tbody>
       </table>
-    </div>
+    <!-- </div> -->
     <form class="column is-one-third has-text-left">
       <div class="field">
         <label class="label">Question</label>
@@ -36,6 +36,11 @@
             v-model="form.question"
             class="textarea is-medium"
           ></textarea>
+          <div v-if="$v.form.question.$error" class="form-error">
+            <span v-if="!$v.form.question.required" class="help is-danger"
+              >Question is required</span
+            >
+          </div>
         </div>
       </div>
       <div class="field">
@@ -46,6 +51,11 @@
             class="textarea is-medium"
             placeholder="Write your asnwer"
           ></textarea>
+          <div v-if="$v.form.response.$error" class="form-error">
+            <span v-if="!$v.form.response.required" class="help is-danger"
+              >Answer is required</span
+            >
+          </div>
         </div>
       </div>
       <div class="control">
@@ -62,6 +72,7 @@
 </template>
 
 <script>
+import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 export default {
   props: {
@@ -75,22 +86,37 @@ export default {
       },
     };
   },
+  validations: {
+    form: {
+      question: {
+        required,
+      },
+      response: {
+        required,
+      },
+    },
+  },
   methods: {
     ...mapActions("faq", ["createQuestion"]),
     addQuestion() {
-      const question = this.form;
-      this.createQuestion(question)
-        .then((res) => {
-          this.form.question = null;
-          this.form.response = null;
-           this.$store
+      this.$v.form.$touch();
+      this.createQuestion(this.form)
+        .then(() => {
+            this.form.question = null
+            this.form.response = null
+             this.$store
           .dispatch("faq/fetchQuestions")
           .then((faqs) => (this.faqs = faqs));
-          this.$toasted.success("Question Added Succesfully!", {
-            duration: 3000,
-          });
+          this.$toasted.success("FAQ Added Succesfully!", {
+          duration: 3000,
+        });
         })
-        .catch((err) => console.log(err));
+        .catch((errorMessage) => {
+          console.log(errorMessage.message)
+            this.$toasted.error("Make sure all fields are filled" , {
+              duration: 5000
+            })
+            })
     },
     deleteQuestion(qId) {
       this.$store.dispatch("faq/deleteQuestion", qId).then(() => {
@@ -120,4 +146,13 @@ th,
 tr {
   width: 200px;
 }
+@media only screen and (max-width: 1000px) {
+    .center {
+  display: flex;
+  flex-direction:column ;
+  align-items: center;
+
+}
+}
+
 </style>

@@ -14,7 +14,7 @@ namespace Kosmeetuper.Controllers
             _repository = repository;
         }
         [HttpPost]
-        public IActionResult Send(Answer answer)
+        public JsonResult Send(Answer answer)
         {
             var newAnswer = new Answer
             {
@@ -24,9 +24,10 @@ namespace Kosmeetuper.Controllers
             };
             if (newAnswer == null)
             {
-                return BadRequest("Empty answer!");
+                return new JsonResult("Please Fill all fields!");
             }
-            return Created("Feedback sent succesfully.", _repository.Add(newAnswer));
+            _repository.Add(newAnswer);
+            return new JsonResult("FAQ added succesfully.");
         }
 
         [HttpGet]
