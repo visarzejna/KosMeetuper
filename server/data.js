@@ -166,32 +166,35 @@ module.exports = {
       "updatedAt": moment().toISOString(),
       "username": "visarzejna",
       "password": "testtest",
+      "active": "true",
       "role": "admin",
       joinedMeetups: [meetup3Id, meetup4Id, meetup5Id, meetup6Id]
     },
     {
       "_id": user2Id,
       "avatar": "https://www.clipartmax.com/png/middle/195-1956720_%5B-img%5D-avatar.png",
-      "email": "peter@gmail.com",
-      "name": "Peter Green",
+      "email": "tester@gmail.com",
+      "name": "Tester Test",
       "info": "Bla bla bla bla",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
-      "username": "Petergreen",
+      "username": "tester",
       "password": "testtest1",
+      "active": "true",
       "role": "user",
       joinedMeetups: [meetup1Id]
     },
     {
       "_id": user3Id,
       "avatar": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuqyc3j2s3bL4DIkC8uC9h0rcAdsDXcwJPNh8XHWbLQfHbOpVU",
-      "email": "kevin@gmail.com",
-      "name": "Kevin Rock",
+      "email": "filan@gmail.com",
+      "name": "Filan Fisteku",
       "info": "I have a famous name",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
-      "username": "Kevin21",
+      "username": "filanfisteku",
       "password": "testtest2",
+      "active": "true",
       "role": "user",
       joinedMeetups: [meetup2Id, meetup3Id, meetup4Id, meetup5Id, meetup6Id]
     }
@@ -226,7 +229,7 @@ module.exports = {
     },
     {
       "_id": thread4Id,
-      "title": "Some Very nice Thread!",
+      "title": "I need some explanation!",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
       "meetup": meetup3Id,
@@ -235,7 +238,7 @@ module.exports = {
     },
     {
       "_id": thread5Id,
-      "title": "Today is very nice weather let's go out!",
+      "title": "A very nice weather outside, let's go out!",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
       "meetup": meetup6Id,
@@ -254,7 +257,7 @@ module.exports = {
     },
     {
       "_id": post2Id,
-      "text": "I like turtles",
+      "text": "I like pizza",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
       "thread": thread1Id,
@@ -270,7 +273,7 @@ module.exports = {
     },
     {
       "_id": post4Id,
-      "text": "I like turtles",
+      "text": "I like pizza",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
       "thread": thread2Id,
@@ -286,7 +289,7 @@ module.exports = {
     },
     {
       "_id": post6Id,
-      "text": "Very nice meetup, isn't it ?",
+      "text": "A very nice meetup, isn't it ?",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
       "thread": thread4Id,
@@ -294,7 +297,7 @@ module.exports = {
     },
     {
       "_id": post7Id,
-      "text": "Yea it is.",
+      "text": "Yes it is.",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
       "thread": thread4Id,
@@ -302,7 +305,7 @@ module.exports = {
     },
     {
       "_id": post8Id,
-      "text": "I am not sure what to write.",
+      "text": "I don't know what to ask.",
       "createdAt": moment().toISOString(),
       "updatedAt": moment().toISOString(),
       "thread": thread3Id,
