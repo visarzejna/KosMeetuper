@@ -25,13 +25,20 @@
                     <button @click="cancelCategory" class="delete"></button>
                   </span>
                 </div>
-                <span>Meetups in {{ searchedLocation }}</span>
+                <span>
+                  <div v-if="searchedLocation && searchedLocation !== ' '" class="level-item">
+                    <span class="tag is-danger is-large">
+                      {{ searchedLocation }}
+                      <button @click="cancelLocation" class="delete"></button>
+                    </span>
+                  </div>
+                </span>
               </div>
             </div>
             <div class="level-right">
               <div class="level-item">
-                <button class="button is-medium m-r-sm">Meetups</button>
-                <button class="button is-medium">Calendar</button>
+                <!-- <button class="button is-medium m-r-sm">Meetups</button> -->
+                <!-- <button class="button is-medium">Calendar</button> -->
               </div>
             </div>
           </div>
@@ -124,7 +131,7 @@ export default {
   methods: {
     fetchMeetups() {
       if (this.searchedLocation) {
-        this.filter["location"] = processLocation(this.searchedLocation)
+        this.filter["location"] = processLocation(this.searchedLocation);
       }
       if (this.category) {
         this.filter["category"] = this.category;
@@ -143,6 +150,10 @@ export default {
     cancelCategory() {
       this.categoryValue = null;
       this.$router.push({ name: "PageMeetupFind" });
+    },
+    cancelLocation() {
+      this.searchedLocation = " ";
+      this.fetchMeetups();
     },
   },
 };

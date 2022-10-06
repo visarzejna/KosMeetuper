@@ -34,13 +34,19 @@ export default {
     props: {
         messages: []
     },
+    data() {
+      return {
+        msg: this.messages
+      }
+    },
     methods: {
         deleteMessage(messageId){
             this.$store.dispatch('feedback/deleteMessage', messageId)
                 .then(() => {
                      this.$store
               .dispatch("feedback/fetchFeedbackMessages")
-              .then((messages) => (this.messages = messages));
+              .then((messages) => (this.msg = messages));
+              this.$emit('updatedMessages', this.msg);
             this.$toasted.success("Message Deleted Succesfully!", {
               duration: 3000,
             });

@@ -84,6 +84,7 @@ export default {
         question: null,
         response: null,
       },
+      faqArray: this.faqs
     };
   },
   validations: {
@@ -102,11 +103,12 @@ export default {
       this.$v.form.$touch();
       this.createQuestion(this.form)
         .then(() => {
-            this.form.question = null
-            this.form.response = null
+            this.form.question = ""
+            this.form.response = ""
              this.$store
           .dispatch("faq/fetchQuestions")
-          .then((faqs) => (this.faqs = faqs));
+          .then((faqs) => (this.faqsArray = faqs));
+          this.$emit('updatedFaqs', this.faqArray);
           this.$toasted.success("FAQ Added Succesfully!", {
           duration: 3000,
         });
@@ -122,7 +124,8 @@ export default {
       this.$store.dispatch("faq/deleteQuestion", qId).then(() => {
         this.$store
           .dispatch("faq/fetchQuestions")
-          .then((faqs) => (this.faqs = faqs));
+          .then((faqs) => (this.faqArray = faqs));
+          this.$emit('updatedFaqs', this.faqArray)
         this.$toasted.success("Question Deleted Succesfully!", {
           duration: 3000,
         });
