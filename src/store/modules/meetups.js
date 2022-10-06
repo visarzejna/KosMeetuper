@@ -89,8 +89,10 @@ export default {
         })
     },
     initializePagesFromQuery({commit}, {pageSize, pageNum}) {
-      commit('setPage', pageNum)
-      commit('setPageSize', pageSize)
+      const page = parseInt(pageNum)
+      const pageSizes = parseInt(pageSize)
+      commit('setPage', page)
+      commit('setPageSize', pageSizes)
     }
   },
   mutations: {

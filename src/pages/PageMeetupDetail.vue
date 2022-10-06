@@ -248,7 +248,7 @@ export default {
             this.$toasted.success("Meetup Deleted Succesfully!", {
               duration: 3000,
             });
-            this.$router.go(-1);
+            this.$router.push('/');
           })
           .catch((err) => console.log(err));
       }

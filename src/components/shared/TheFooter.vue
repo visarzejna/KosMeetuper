@@ -18,7 +18,7 @@
                 <li class="list-inline-item"><router-link :to="{name: 'PageAboutUs'}" >About</router-link></li>
                 <li class="list-inline-item"><router-link :to="{ name: 'PageContactUs'}" >Contact</router-link></li>
                 <li class="list-inline-item"><router-link :to="{ name: 'PageFAQ'}" >FAQ</router-link></li>
-                <li class="list-inline-item"><router-link :to="{ name: 'PageLogin'}">Login</router-link></li>
+                <li v-if="!user" class="list-inline-item"><router-link :to="{ name: 'PageLogin'}">Login</router-link></li>
             </ul>
             <p class="copyright">Kosmeetuper © 2022</p>
         </footer>
@@ -31,7 +31,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
 <script>
-export default {};
+import { mapGetters } from 'vuex'
+export default {
+  computed: {
+      ...mapGetters({
+        user: "auth/authUser"
+      })
+  }
+};
 </script>
 
 <style scoped>
