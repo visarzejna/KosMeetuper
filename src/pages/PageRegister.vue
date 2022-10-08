@@ -44,6 +44,7 @@
                   <div v-if="$v.form.email.$error" class="form-error">
                     <span v-if="!$v.form.email.required" class="help is-danger">Email is required</span>
                     <span v-if="!$v.form.email.email" class="help is-danger">Email address is not valid</span>
+                    <span v-if="!$v.form.email.unique" class="help is-danger">Email address is already in use</span>
                   </div>
                 </div>
               </div>

@@ -62,13 +62,13 @@
                   <label class="label">Name</label>
                   <div class="control">
                     <input
-                      v-model="form.Name"
-                      @blur="$v.form.Name.$touch()"
+                      v-model="form.name"
+                      @blur="$v.form.name.$touch()"
                       class="input is-medium"
                       type="text"
                     />
-                    <div v-if="$v.form.Name.$error" class="form-error">
-                      <span v-if="!$v.form.Name.required" class="help is-danger"
+                    <div v-if="$v.form.name.$error" class="form-error">
+                      <span v-if="!$v.form.name.required" class="help is-danger"
                         >Name is required</span
                       >
                     </div>
@@ -78,18 +78,18 @@
                   <label class="label">Email</label>
                   <div class="control">
                     <input
-                      v-model="form.Email"
-                      @blur="$v.form.Email.$touch()"
+                      v-model="form.email"
+                      @blur="$v.form.email.$touch()"
                       class="input is-medium"
                       type="text"
                     />
-                    <div v-if="$v.form.Email.$error" class="form-error">
+                    <div v-if="$v.form.email.$error" class="form-error">
                       <span
-                        v-if="!$v.form.Email.required"
+                        v-if="!$v.form.email.required"
                         class="help is-danger"
                         >Email is required</span
                       >
-                      <span v-if="!$v.form.Email.email" class="help is-danger"
+                      <span v-if="!$v.form.email.email" class="help is-danger"
                         >Email address is not valid</span
                       >
                     </div>
@@ -99,16 +99,16 @@
                   <label class="label">Message</label>
                   <div class="control">
                     <textarea
-                      v-model="form.MessageDescription"
-                      @blur="$v.form.MessageDescription.$touch()"
+                      v-model="form.message"
+                      @blur="$v.form.message.$touch()"
                       class="textarea is-medium"
                     ></textarea>
                     <div
-                      v-if="$v.form.MessageDescription.$error"
+                      v-if="$v.form.message.$error"
                       class="form-error"
                     >
                       <span
-                        v-if="!$v.form.MessageDescription.required"
+                        v-if="!$v.form.message.required"
                         class="help is-danger"
                         >Message is required</span
                       >
@@ -140,22 +140,22 @@ export default {
   data() {
     return {
       form: {
-        Name: null,
-        Email: null,
-        MessageDescription: null,
+        name: null,
+        email: null,
+        message: null,
       },
     };
   },
   validations: {
     form: {
-      Name: {
+      name: {
         required,
       },
-      Email: {
+      email: {
         required,
         email,
       },
-      MessageDescription: {
+      message: {
         required,
       },
     },
@@ -166,9 +166,9 @@ export default {
       this.$v.form.$touch();
       this.createFeedbackMessage(this.form)
         .then(() => {
-          this.form.Name = null;
-          this.form.Email = null;
-          this.form.MessageDescription = null;
+          this.form.name = null;
+          this.form.email = null;
+          this.form.message = null;
           this.$toasted.success("Message Sent Succesfully!", {
             duration: 3000,
           });

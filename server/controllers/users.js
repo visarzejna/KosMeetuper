@@ -20,7 +20,7 @@ function sendConfirmation({ toUser, hash }, callback) {
   const message = {
     from: config.GOOGLE_USER,
     // to: toUser.email  uncomment after test
-    to: config.GOOGLE_USER,
+    to: toUser.email,
     subject: "Kosmeetuper - Activate your account",
     html: `
     <h3> Hello ${toUser.name} </h3>
@@ -317,7 +317,6 @@ exports.updateUser = (req, res) => {
         return res.json(updatedUser);
       }
     );
-    z;
   } else {
     return res.status(422).send({ errors: "Authorization Error!" });
   }

@@ -9,7 +9,7 @@ export default {
   getters: {},
   actions: {
     fetchQuestions({ state, commit }) {
-        axiosInstance.get("http://localhost:5000/api/v1/answer").then((res) => {
+        axiosInstance.get("/api/v1/faq").then((res) => {
           const questions = res.data;
           commit(
             "setItems",
@@ -24,7 +24,7 @@ export default {
 
       if (user.role === "admin") {
         return axiosInstance
-          .post("http://localhost:5000/api/v1/answer", questionToCreate)
+          .post("/api/v1/faq", questionToCreate)
           .then((res) => res.data);
       }
     },
@@ -32,7 +32,7 @@ export default {
       const user = rootState.auth.user;
       if (user.role === "admin") {
         return axiosInstance
-          .delete(`http://localhost:5000/api/v1/answer/${questionId}`)
+          .delete(`/api/v1/faq/${questionId}`)
           .then((res) => {
             const questionId = res.data;
             return questionId;

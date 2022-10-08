@@ -20,7 +20,7 @@
                 <li class="list-inline-item"><router-link :to="{ name: 'PageFAQ'}" >FAQ</router-link></li>
                 <li v-if="!user" class="list-inline-item"><router-link :to="{ name: 'PageLogin'}">Login</router-link></li>
             </ul>
-            <p class="copyright">Kosmeetuper © 2022</p>
+            <p class="copyright">Meetuper © 2022</p>
         </footer>
     </div>
   

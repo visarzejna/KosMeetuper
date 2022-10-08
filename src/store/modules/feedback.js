@@ -14,7 +14,7 @@ export default {
       const user = rootState.auth.user;
 
       if (user.role === "admin") {
-        axiosInstance.get("http://localhost:5000/api/v1/feedback").then((res) => {
+        axiosInstance.get("/api/v1/feedback").then((res) => {
           const messages = res.data;
           commit(
             "setItems",
@@ -27,7 +27,7 @@ export default {
     },
     createFeedbackMessage({state}, messageToCreate) {
       return axios
-        .post("http://localhost:5000/api/v1/feedback", messageToCreate)
+        .post("/api/v1/feedback/", messageToCreate)
         .then((res) => res.data)
         .catch(err => rejectError(err));
     },
@@ -35,7 +35,7 @@ export default {
       const user = rootState.auth.user;
       if (user.role === "admin") {
         return axiosInstance
-          .delete(`http://localhost:5000/api/v1/feedback/${messageId}`)
+          .delete(`/api/v1/feedback/${messageId}`)
           .then((res) => {
             const messageId = res.data;
             return messageId;

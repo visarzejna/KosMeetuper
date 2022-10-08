@@ -2,7 +2,7 @@
   <nav class="navbar is-spaced" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link :to="'/'" class="navbar-item" href="https://bulma.io">
-        <h1 class="title is-4">KosMeetuper</h1>
+        <h1 class="title is-4">Meetuper</h1>
       </router-link>
       <a
         @click="openBurger"
@@ -28,8 +28,9 @@
         <router-link :to="{ name: 'PageMeetupFind' }" class="navbar-item">
           Find
         </router-link>
-        <router-link :to="{ name: 'PageContactUs' }" class="navbar-item">
-          Contact Us
+
+        <router-link :to="{ name: 'PageAboutUs' }" class="navbar-item">
+          About
         </router-link>
 
         <div
@@ -44,12 +45,16 @@
           <a @click="openMore" class="navbar-link"> More </a>
 
           <div class="navbar-dropdown">
-            <router-link :to="{ name: 'PageAboutUs'}" class="navbar-item"> About </router-link>
-            <router-link :to="{ name: 'PageFAQ'}" class="navbar-item"> FAQ </router-link>
+            <router-link :to="{ name: 'PageContactUs' }" class="navbar-item">
+              Contact Us
+            </router-link>
+            <router-link :to="{ name: 'PageFAQ' }" class="navbar-item">
+              FAQ
+            </router-link>
             <hr class="navbar-divider" />
             <router-link :to="{ name: 'PageContactUs' }" class="navbar-item">
-          Report an issue
-        </router-link>
+              Report an issue
+            </router-link>
           </div>
         </div>
       </div>
@@ -104,7 +109,6 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-
   data() {
     return {
       isOpen: false,
@@ -117,13 +121,12 @@ export default {
     }),
   },
   methods: {
-
     logout() {
       this.$store.dispatch("auth/logout").then(() => {
         this.$router.push("/");
       });
     },
-    
+
     openBurger() {
       this.isOpen = !this.isOpen;
     },
@@ -135,7 +138,7 @@ export default {
 </script>
 
 <style scoped>
-.navbar{
+.navbar {
   background-color: rgb(240, 240, 240);
 }
 </style>

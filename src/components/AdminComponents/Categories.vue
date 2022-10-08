@@ -96,6 +96,7 @@ export default {
         name: null,
         image: null,
       },
+      updatedCategories: this.categories
     };
   },
   validations: {
@@ -119,7 +120,8 @@ export default {
             this.form.image = null
              this.$store
           .dispatch("categories/fetchCategories")
-          .then((categories) => (this.categories = categories));
+          .then((categories) => (this.updatedCategories = categories));
+          this.$emit('updatedCategories', this.updatedCategories);
           this.$toasted.success("Category Added Succesfully!", {
           duration: 3000,
         });
@@ -134,7 +136,8 @@ export default {
       this.$store.dispatch("categories/deleteCategory", cId).then(() => {
         this.$store
           .dispatch("categories/fetchCategories")
-          .then((categories) => (this.categories = categories));
+          .then((categories) => (this.updatedCategories = categories));
+          this.$emit('updatedCategories', this.updatedCategories);
         this.$toasted.success("Category Deleted Succesfully!", {
           duration: 3000,
         });

@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Welcome to KosMeetuper
+            Welcome to Meetuper
           </h1>
           <h2 class="subtitle">
             Plan your meetups simple and anywhere
@@ -20,4 +20,11 @@
 </script>
 
 <style scoped>
+section {
+  
+  box-shadow: 0px 7px 13px 0px rgba(0,0,0,0.56);
+-webkit-box-shadow: 0px 7px 13px 0px rgba(0,0,0,0.56);
+-moz-box-shadow: 0px 7px 13px 0px rgba(0,0,0,0.56);
+
+}
 </style>

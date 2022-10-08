@@ -11,7 +11,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="faq in faqs" :key="faq.id">
+          <tr v-for="faq in faqs" :key="faq._id">
             <td>
               <b>{{ faq.question }}</b>
             </td>
@@ -19,7 +19,7 @@
             <td>{{ faq.createdAt | fromNow }}</td>
             <td>
               <a
-                @click.prevent="deleteQuestion(faq.id)"
+                @click.prevent="deleteQuestion(faq._id)"
                 class="button is-danger"
                 >Delete</a
               >
