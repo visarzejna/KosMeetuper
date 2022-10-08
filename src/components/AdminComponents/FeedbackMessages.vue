@@ -8,13 +8,14 @@
             <th scope="col">Message</th>
             <th scope="col">Created</th>
             <th scope="col"></th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="message in messages" :key="message._id">
             <td><b>{{ message.name }}</b></td>
             <td>{{ message.email }}</td>
-            <td class="breakLine" style="width:200px">{{ message.messageDescription }}</td>
+            <td class="breakLine" style="width:200px">{{ message.message }}</td>
             <td class="breakLine" style="width:200px">{{ message.createdAt | fromNow }}</td>
             <td>
               <a

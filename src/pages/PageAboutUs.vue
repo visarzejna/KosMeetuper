@@ -21,7 +21,7 @@
             <div class="content">
               <h3>This app was developed by Visar Zejna</h3>
               <p>
-                Created using VueJs for Front end, NodeJs and Asp.net for
+                Created using VueJs for Front end, NodeJs for
                 Backend.<br />
                 This website is just a project developed to improve my skills in
                 Fullstack developing and the social media links don't work but
